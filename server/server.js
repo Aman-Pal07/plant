@@ -4,49 +4,69 @@ const express = require("express");
 const cors = require("cors");
 const connectToDB = require("./database/db");
 
-// Initialize express app
 const app = express();
-const PORT = process.env.PORT || 3000;
 
-// CORS configuration with multiple origins
-const allowedOrigins = [
-  "http://localhost:5173", // Development
-  "https://your-frontend-domain.vercel.app", // Add your deployed frontend URL here
-];
-
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true,
-  optionsSuccessStatus: 200,
-};
-
-// Middlewares
-app.use(cors(corsOptions));
+// Middleware
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://your-frontend-domain.vercel.app",
+    ],
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Database connection
-connectToDB().catch(console.error);
+// Database connection with error handling
+let dbConnection = null;
+const connectDatabase = async () => {
+  try {
+    if (!dbConnection) {
+      dbConnection = await connectToDB();
+    }
+    return dbConnection;
+  } catch (error) {
+    console.error("Database connection error:", error);
+    throw error;
+  }
+};
 
-// Routes
-app.get("/", (req, res) => {
-  res.json({ message: "API is running successfully" });
+// Health check route
+app.get("/api/health", (req, res) => {
+  res.json({ status: "healthy" });
 });
 
-app.use("/api/auth", authRoutes);
+// Wrap routes in async middleware to ensure DB connection
+const withDB = (handler) => async (req, res, next) => {
+  try {
+    await connectDatabase();
+    await handler(req, res, next);
+  } catch (error) {
+    console.error("Route error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: process.env.NODE_ENV === "development" ? error.message : undefined,
+    });
+  }
+};
 
-// Error handling middleware
+// Routes with DB connection wrapper
+app.use(
+  "/api/auth",
+  withDB((req, res, next) => {
+    require("./routes/auth-routes")(req, res, next);
+  })
+);
+
+// Error handling
 app.use((err, req, res, next) => {
-  console.error(err.stack);
+  console.error("Global error:", err);
   res.status(500).json({
     success: false,
-    message: "Something went wrong!",
+    message: "Something went wrong",
     error: process.env.NODE_ENV === "development" ? err.message : undefined,
   });
 });
@@ -59,10 +79,11 @@ app.use((req, res) => {
   });
 });
 
-// Only start the server if this file is run directly
-if (require.main === module) {
+// Development server
+if (process.env.NODE_ENV !== "production") {
+  const PORT = process.env.PORT || 8000;
   app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+    console.log(`Server running on port ${PORT}`);
   });
 }
 
