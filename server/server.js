@@ -3,48 +3,83 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const connectToDB = require("./database/db");
-const authRoutes = require("./routes/auth-routes");
 
 const app = express();
 
-// Middlewares
+// Middleware
 app.use(
   cors({
-    origin: ["http://localhost:5173", process.env.CLIENT_URL],
+    origin: [
+      "http://localhost:5173",
+      "https://your-frontend-domain.vercel.app",
+    ],
     credentials: true,
   })
 );
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// Test route to verify API is working
-app.get("/api/test", (req, res) => {
-  res.json({ message: "API is working" });
+// Database connection with error handling
+let dbConnection = null;
+const connectDatabase = async () => {
+  try {
+    if (!dbConnection) {
+      dbConnection = await connectToDB();
+    }
+    return dbConnection;
+  } catch (error) {
+    console.error("Database connection error:", error);
+    throw error;
+  }
+};
+
+// Health check route
+app.get("/api/health", (req, res) => {
+  res.json({ status: "healthy" });
 });
 
-// Mount auth routes
-app.use("/api/auth", authRoutes);
+// Wrap routes in async middleware to ensure DB connection
+const withDB = (handler) => async (req, res, next) => {
+  try {
+    await connectDatabase();
+    await handler(req, res, next);
+  } catch (error) {
+    console.error("Route error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: process.env.NODE_ENV === "development" ? error.message : undefined,
+    });
+  }
+};
 
-// 404 handler - keep this last
-app.use((req, res) => {
-  console.log(`404 - Route not found: ${req.method} ${req.url}`);
-  res.status(404).json({
-    success: false,
-    message: "Route not found",
-    path: req.url, // This will help debug which route was not found
-  });
-});
+// Routes with DB connection wrapper
+app.use(
+  "/api/auth",
+  withDB((req, res, next) => {
+    require("./routes/auth-routes")(req, res, next);
+  })
+);
 
-// Error handler
+// Error handling
 app.use((err, req, res, next) => {
-  console.error("Error:", err);
+  console.error("Global error:", err);
   res.status(500).json({
     success: false,
-    message: "Internal server error",
+    message: "Something went wrong",
     error: process.env.NODE_ENV === "development" ? err.message : undefined,
   });
 });
 
-// Only start server if not in production (Vercel handles this in production)
+// 404 handler
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: "Route not found",
+  });
+});
+
+// Development server
 if (process.env.NODE_ENV !== "production") {
   const PORT = process.env.PORT || 8000;
   app.listen(PORT, () => {
@@ -52,4 +87,5 @@ if (process.env.NODE_ENV !== "production") {
   });
 }
 
+// Export for Vercel
 module.exports = app;
