@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 3000;
 // Middlewares
 app.use(
   cors({
-    origin: "http://localhost:5173", // Allow requests from frontend running on this URL
+    origin: "https://plant-x14y.vercel.app/", // Allow requests from frontend running on this URL
   })
 );
 app.use(express.json());
