@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 3000;
 // Middlewares
 app.use(
   cors({
-    origin: "https://plant-x14y-20r77kooh-aman-creations-projects.vercel.app/",
+    origin: "https://plant-x14y.vercel.app/",
   })
 );
 app.use(express.json());
