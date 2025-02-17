@@ -3,83 +3,48 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const connectToDB = require("./database/db");
+const authRoutes = require("./routes/auth-routes");
 
 const app = express();
 
-// Middleware
+// Middlewares
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "https://your-frontend-domain.vercel.app",
-    ],
+    origin: ["http://localhost:5173", process.env.CLIENT_URL],
     credentials: true,
   })
 );
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
-// Database connection with error handling
-let dbConnection = null;
-const connectDatabase = async () => {
-  try {
-    if (!dbConnection) {
-      dbConnection = await connectToDB();
-    }
-    return dbConnection;
-  } catch (error) {
-    console.error("Database connection error:", error);
-    throw error;
-  }
-};
-
-// Health check route
-app.get("/api/health", (req, res) => {
-  res.json({ status: "healthy" });
+// Test route to verify API is working
+app.get("/api/test", (req, res) => {
+  res.json({ message: "API is working" });
 });
 
-// Wrap routes in async middleware to ensure DB connection
-const withDB = (handler) => async (req, res, next) => {
-  try {
-    await connectDatabase();
-    await handler(req, res, next);
-  } catch (error) {
-    console.error("Route error:", error);
-    res.status(500).json({
-      success: false,
-      message: "Internal server error",
-      error: process.env.NODE_ENV === "development" ? error.message : undefined,
-    });
-  }
-};
+// Mount auth routes
+app.use("/api/auth", authRoutes);
 
-// Routes with DB connection wrapper
-app.use(
-  "/api/auth",
-  withDB((req, res, next) => {
-    require("./routes/auth-routes")(req, res, next);
-  })
-);
+// 404 handler - keep this last
+app.use((req, res) => {
+  console.log(`404 - Route not found: ${req.method} ${req.url}`);
+  res.status(404).json({
+    success: false,
+    message: "Route not found",
+    path: req.url, // This will help debug which route was not found
+  });
+});
 
-// Error handling
+// Error handler
 app.use((err, req, res, next) => {
-  console.error("Global error:", err);
+  console.error("Error:", err);
   res.status(500).json({
     success: false,
-    message: "Something went wrong",
+    message: "Internal server error",
     error: process.env.NODE_ENV === "development" ? err.message : undefined,
   });
 });
 
-// 404 handler
-app.use((req, res) => {
-  res.status(404).json({
-    success: false,
-    message: "Route not found",
-  });
-});
-
-// Development server
+// Only start server if not in production (Vercel handles this in production)
 if (process.env.NODE_ENV !== "production") {
   const PORT = process.env.PORT || 8000;
   app.listen(PORT, () => {
@@ -87,5 +52,4 @@ if (process.env.NODE_ENV !== "production") {
   });
 }
 
-// Export for Vercel
 module.exports = app;
