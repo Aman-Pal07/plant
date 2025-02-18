@@ -184,7 +184,7 @@ const Register = () => {
     <div className="w-full flex justify-center items-start  md:mt-3">
       <video
         ref={videoRef}
-        src="../../public/plant_gif.mp4"
+        src="/plant_gif.mp4"
         autoPlay
         muted
         className="w-[800px] h-[800px] sm:w-80 sm:h-80 md:w-[600px] md:h-[600px]"
