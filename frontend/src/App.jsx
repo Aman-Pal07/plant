@@ -8,7 +8,7 @@ const App = () => {
   return (
     <div
       className="flex flex-col items-center bg-cover bg-center h-full"
-      style={{ backgroundImage: "url('../public/Forest-Habitat.jpg')" }}
+      style={{ backgroundImage: "url('/Forest-Habitat.jpg')" }}
     >
       {/* Logo at the top center */}
       <Logo />
