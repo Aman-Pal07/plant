@@ -5,7 +5,7 @@ const Register = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    phone: "", // Optional field
+    phone: "",
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -62,49 +62,36 @@ const Register = () => {
     if (!validateForm()) {
       return;
     }
-
     setLoading(true);
     setError("");
     setSuccess("");
     setPopupMessage("");
 
-    // Create request body, omitting phone entirely if it's empty
-    const requestBody = {
-      username: formData.name.trim(),
-      email: formData.email.trim().toLowerCase(),
-    };
-
-    // Only add phone to request body if it's not empty
-    if (formData.phone.trim()) {
-      requestBody.phone = formData.phone.trim();
-    }
-
     try {
-      const response = await fetch(
-        "https://plant-b9xj.onrender.com/api/auth/register",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(requestBody),
-        }
-      );
+      const response = await fetch("http://localhost:8000/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+        }),
+      });
 
       const data = await response.json();
 
-      if (response.ok && data.success) {
+      if (response.ok) {
         setSuccess(data.message);
         setShowAnimation(true);
         setFormData({ name: "", email: "", phone: "" });
-        setPopupMessage(data.message);
+        setPopupMessage("Registration Successful!");
         setPopupType("success");
 
-        if (videoRef.current) {
-          setTimeout(() => {
-            setShowAnimation(false);
-          }, videoRef.current.duration * 1000);
-        }
+        setTimeout(() => {
+          setShowAnimation(false);
+        }, videoRef.current.duration * 1000);
       } else {
         setError(data.message || "Something went wrong. Please try again.");
         setPopupMessage(
@@ -113,10 +100,9 @@ const Register = () => {
         setPopupType("error");
       }
     } catch (error) {
-      console.error("Registration error:", error);
-      setError("Network error. Please check your connection and try again.");
+      setError("The error is ", error);
       setPopupMessage(
-        "Network error. Please check your connection and try again."
+        "Thanks for Registration. The Certification has been mailed to your Account"
       );
       setPopupType("error");
     } finally {
@@ -148,7 +134,7 @@ const Register = () => {
         <input
           type="text"
           id="name"
-          placeholder="Your full name *"
+          placeholder="Your full name"
           required
           value={formData.name}
           onChange={handleChange}
@@ -161,8 +147,7 @@ const Register = () => {
         <input
           type="email"
           id="email"
-          placeholder="Your email address *"
-          required
+          placeholder="Your email address"
           value={formData.email}
           onChange={handleChange}
           className="w-full pl-8 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-green-700 transition-all text-xs sm:text-sm md:text-base"
@@ -174,16 +159,11 @@ const Register = () => {
         <input
           type="tel"
           id="phone"
-          placeholder="Your phone number (optional)"
+          placeholder="Your phone number"
           value={formData.phone}
           onChange={handleChange}
           className="w-full pl-8 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-green-700 transition-all text-xs sm:text-sm md:text-base"
         />
-        {formData.phone && (
-          <p className="text-xs text-gray-500 mt-1 ml-2">
-            Phone number must be exactly 10 digits
-          </p>
-        )}
       </div>
 
       <button
@@ -221,24 +201,17 @@ const Register = () => {
   );
 
   return (
-    <div className="min-h-screen w-full h-[100vh] bg-cover bg-center bg-[url('/Forest-Habitat.jpg')] overflow-x-hidden">
-      <div className="absolute inset-0 bg-black opacity-40" />
+    <div className="min-h-screen w-full h-[100vh] bg-cover bg-center overflow-x-hidden mt-[-15px]">
+      {/* Optional overlay for darkening the background */}
+      {/* <div className="absolute inset-0 bg-black opacity-40" /> */}
 
       <div className="relative w-full min-h-screen flex flex-col items-center justify-start py-8 px-4">
-        <div className="w-20 sm:w-32 md:w-40 mb-8">
-          <img
-            src="https://www.oil-india.com/files/inline-images/OILLOGOWITHBACKGROUND.png"
-            alt="Logo"
-            className="w-full h-auto object-contain"
-          />
-        </div>
-
         {popupMessage && renderPopup()}
 
         {showAnimation && !videoEnded ? (
           renderAnimation()
         ) : (
-          <div className="bg-white/50 backdrop-blur-lg rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 shadow-2xl w-full max-w-[90vw] sm:max-w-md mx-auto">
+          <div className="bg-white/50 backdrop-blur-xl rounded-xl h-[510px] sm:rounded-2xl p-4 sm:p-6 md:p-8 shadow-2xl w-full max-w-[95vw] sm:max-w-xl mx-auto">
             <h2 className="text-lg sm:text-2xl md:text-3xl text-green-700 text-center mb-2 sm:mb-4 font-bold">
               Plant a Tree &<br className="sm:hidden" /> Save the Earth
             </h2>
