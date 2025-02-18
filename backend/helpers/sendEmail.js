@@ -29,8 +29,8 @@ const generateCertificateHTML = ({
         }
 
         html, body {
-            width: 400mm; /* A4 landscape width */
-            height: 210mm; /* A4 landscape height */
+    width: 297mm; /* Standard A4 landscape width */
+            height: 210mm; /* Standard A4 landscape height */
             margin: 0;
             padding: 0;
             background: white;
@@ -229,8 +229,8 @@ const generatePDF = async (html, outputPath) => {
       format: "A4",
       orientation: "landscape",
       border: "0",
-      height: "320mm", // A4 height in landscape
-      width: "400mm", // A4 width in landscape
+      height: "210mm", // Standard A4 height in landscape
+      width: "297mm", // Standard A4 width in landscape
       type: "pdf",
       renderDelay: 1000,
       zoomFactor: 1, // Prevent any automatic scaling
