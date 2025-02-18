@@ -169,15 +169,15 @@ const Register = () => {
   );
 
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center bg-cover bg-center relative bg-[url('/Forest-Habitat.jpg')] px-4 py-6">
+    <div className="min-h-screen flex flex-col justify-center  items-center bg-cover bg-center relative bg-[url('/Forest-Habitat.jpg')] px-4 py-6">
       <div className="absolute inset-0 bg-black opacity-40 z-0"></div>
 
       {/* Logo */}
-      <div className="absolute top-4 left-1/2 transform bg-white -translate-x-1/2 z-10 w-full max-w-[200px] px-4">
+      <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-10 w-full max-w-[200px] px-4">
         <img
-          src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Oil_India_Logo.svg/800px-Oil_India_Logo.svg.png"
+          src="https://www.oil-india.com/files/inline-images/OILLOGOWITHBACKGROUND.png"
           alt="Logo"
-          className="w-full h-auto object-contain"
+          className="w-full h-auto object-contain  "
         />
       </div>
 
@@ -186,7 +186,7 @@ const Register = () => {
       {showAnimation && !videoEnded ? (
         renderAnimation()
       ) : (
-        <div className="bg-white/50 backdrop-blur-lg rounded-2xl p-6 sm:p-8 md:p-10 shadow-2xl w-full max-w-md mx-auto relative z-10 mt-20 transition-transform duration-300">
+        <div className="bg-white/50 backdrop-blur-lg rounded-2xl p-6 sm:p-8 md:p-10 shadow-2xl w-full max-w-md mx-auto relative z-10 mt-40 transition-transform duration-300 ">
           <h2 className="text-xl sm:text-2xl md:text-3xl text-green-700 text-center mb-4 font-bold">
             Plant a Tree &<br className="sm:hidden" /> Save the Earth
           </h2>
