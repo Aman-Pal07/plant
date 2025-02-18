@@ -13,9 +13,9 @@ const generateCertificateHTML = ({
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Token of Gratitude</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=297mm, height=210mm">
+    <title>Certificate</title>
     <style>
         @page {
             size: A4 landscape;
@@ -31,166 +31,94 @@ const generateCertificateHTML = ({
         html, body {
             width: 297mm;
             height: 210mm;
-            margin: 0;
-            padding: 0;
             background: white;
             font-family: Arial, sans-serif;
             overflow: hidden;
         }
 
-        .certificate-wrapper {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: white;
-            padding: 15mm;
-        }
-
         .certificate {
             width: 100%;
             height: 100%;
-            background: white;
+            padding: 20mm;
             position: relative;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
         }
 
         .header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 20px;
-            height: 40mm;
+            height: 35mm;
         }
 
         .logo {
-            width: 35mm;
-            height: 35mm;
+            width: 30mm;
+            height: 30mm;
             object-fit: contain;
         }
 
         .title {
             text-align: center;
-            font-size: 32px;
-            font-weight: bold;
-            margin: 15px 0;
+            font-size: 36px;
             color: #15803d;
+            font-weight: bold;
+            margin: 15mm 0 10mm 0;
+        }
+
+        .name-container {
+            text-align: center;
+            margin-bottom: 10mm;
         }
 
         .name {
-            text-align: center;
-            font-size: 36px;
-            text-decoration: underline;
-            text-decoration-color: #22c55e;
-            text-decoration-thickness: 1px;
-            margin: 20px 0;
+            font-size: 32px;
             color: #0d7230;
-            font-weight: bold;
+            padding-bottom: 2mm;
+            border-bottom: 0.5mm solid #22c55e;
+            display: inline-block;
         }
 
         .content {
-            text-align: justify;
-            line-height: 1.5;
-            margin: 10px 0;
+            text-align: center;
+            line-height: 1.6;
             color: #374151;
-            padding: 0 20px;
-        }
-
-        .main-text {
-            margin: 15px 0;
-            font-size: 18px;
-            text-align: center;
-        }
-
-        .date-location {
-            margin: 15px 0;
-            font-size: 18px;
-            text-align: center;
-        }
-
-        .appreciation-text {
-            margin: 15px 0;
-            font-size: 18px;
-            text-align: center;
-            padding: 0 40px;
-        }
-
-        .divider {
-            border-top: 0.5mm solid #e5e7eb;
-            width: 90%;
-            margin: 15px auto;
-        }
-
-        .button-container {
-            text-align: center;
-            margin: 15px 0 20px 0;
-        }
-
-        .location-button {
-            background-color: #15803d;
-            color: white;
-            padding: 8px 20px;
-            border-radius: 4px;
-            border: none;
-            text-decoration: none;
-            display: inline-block;
             font-size: 16px;
-            font-weight: 500;
+        }
+
+        .content p {
+            margin: 5mm 0;
         }
 
         strong {
-            color: #15803d;
+            color: #166534;
         }
     </style>
 </head>
 <body>
-    <div class="certificate-wrapper">
-        <div class="certificate">
-            <div class="header">
-                <img
-                    src="https://www.oil-india.com/files/inline-images/OILLOGOWITHOUTBACKGROUND.png"
-                    alt="Oil India Logo"
-                    class="logo"
-                />
-                <img
-                    src="https://www.oil-india.com/files/inline-images/Santulan%20Logo%203%20copy.png"
-                    alt="Santulan Logo"
-                    class="logo"
-                />
-            </div>
-
-            <div class="title">Token of Gratitude</div>
-
+    <div class="certificate">
+        <div class="header">
+            <img src="/api/placeholder/120/120" alt="Oil India Logo" class="logo" />
+            <img src="/api/placeholder/120/120" alt="Santulan Logo" class="logo" />
+        </div>
+        
+        <div class="title">Token of Gratitude</div>
+        
+        <div class="name-container">
             <div class="name">${name}</div>
-
-            <div class="content">
-                <div class="main-text">
-                    For your valuable participation in the
-                </div>
-
-                <div class="date-location">
-                    <strong>Townhall Meeting on OIL's Environmental Strategy held on 19<sup>th</sup> Feb, 2025 at Duliajan Club, Assam</strong>
-                    and your commitment to building a sustainable future.
-                </div>
-
-                <div class="appreciation-text">
-                    As a token of our appreciation for your involvement in this important conversation, we are pleased to present you with an <strong>e-plant gift</strong>, symbolizing our collective dedication to environmental stewardship and the fight against climate change.
-                </div>
-            </div>
-
-            <div>
-                <div class="divider"></div>
-                <div class="button-container">
-                    <a href="https://maps.app.goo.gl/xTyGAKBoTb2CXxtc7" class="location-button">View Plant Location</a>
-                </div>
-            </div>
+        </div>
+        
+        <div class="content">
+            <p>For your valuable participation in the<br>
+            <strong>Townhall Meeting on OIL's Environmental Strategy held on 19<sup>th</sup> Feb, 2025 at Duliajan Club, Assam</strong><br>
+            and your commitment to building a sustainable future.</p>
+            
+            <p>As a token of our appreciation for your involvement in this important conversation, we are pleased to present you with an <strong>e-plant gift</strong>, symbolizing our collective dedication to environmental stewardship and the fight against climate change.</p>
         </div>
     </div>
 </body>
 </html>
+
   `;
 };
 
@@ -200,8 +128,8 @@ const generatePDF = async (html, outputPath) => {
       format: "A4",
       orientation: "landscape",
       border: "0",
-      height: "215mm", // Standard A4 height in landscape
-      width: "310mm", // Standard A4 width in landscape
+      height: "210mm", // Exact A4 landscape height
+      width: "297mm", // Exact A4 landscape width
       type: "pdf",
       renderDelay: 1000,
       zoomFactor: 1, // Prevent any automatic scaling
