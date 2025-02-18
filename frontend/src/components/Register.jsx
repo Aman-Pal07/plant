@@ -13,8 +13,23 @@ const Register = () => {
   const [showAnimation, setShowAnimation] = useState(false);
   const [popupMessage, setPopupMessage] = useState("");
   const [popupType, setPopupType] = useState("");
-  const [videoEnded, setVideoEnded] = useState(false);
+  const [videoError, setVideoError] = useState(false);
+  const [videoLoaded, setVideoLoaded] = useState(false);
   const videoRef = useRef(null);
+  React.useEffect(() => {
+    checkVideoAvailability();
+  }, []);
+
+  const checkVideoAvailability = async () => {
+    try {
+      const response = await fetch("/plant_gif.mp4", { method: "HEAD" });
+      if (!response.ok) {
+        setVideoError(true);
+      }
+    } catch (error) {
+      setVideoError(true);
+    }
+  };
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -58,17 +73,19 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate form before submission
     if (!validateForm()) {
       return;
     }
+
     setLoading(true);
     setError("");
     setSuccess("");
     setPopupMessage("");
 
     try {
-      const response = await fetch("http://localhost:8000/api/auth/register", {
+      // Use relative URL or environment variable for API endpoint
+      const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:8000";
+      const response = await fetch(`${apiUrl}/api/auth/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -78,32 +95,35 @@ const Register = () => {
           email: formData.email,
           phone: formData.phone,
         }),
+        // Add credentials if needed
+        credentials: "include",
       });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
       const data = await response.json();
 
-      if (response.ok) {
-        setSuccess(data.message);
-        setShowAnimation(true);
-        setFormData({ name: "", email: "", phone: "" });
-        setPopupMessage("Registration Successful!");
-        setPopupType("success");
+      setSuccess(data.message);
+      setFormData({ name: "", email: "", phone: "" });
+      setPopupMessage("Registration Successful!");
+      setPopupType("success");
 
+      // Only show animation if video is available
+      if (!videoError) {
+        setShowAnimation(true);
+        // Set timeout based on actual video duration or fallback to 3 seconds
+        const duration = (videoRef.current?.duration || 3) * 1000;
         setTimeout(() => {
           setShowAnimation(false);
-        }, videoRef.current.duration * 1000);
-      } else {
-        setError(data.message || "Something went wrong. Please try again.");
-        setPopupMessage(
-          data.message || "Something went wrong. Please try again."
-        );
-        setPopupType("error");
+          window.location.reload();
+        }, duration);
       }
     } catch (error) {
-      setError("The error is ", error);
-      setPopupMessage(
-        "Thanks for Registration. The Certification has been mailed to your Account"
-      );
+      console.error("Registration error:", error);
+      setError("Registration failed. Please try again.");
+      setPopupMessage("Registration failed. Please try again.");
       setPopupType("error");
     } finally {
       setLoading(false);
@@ -184,19 +204,34 @@ const Register = () => {
   );
 
   const renderAnimation = () => (
-    <div className="w-full flex justify-center items-center">
-      <video
-        ref={videoRef}
-        src="/plant_gif.mp4"
-        autoPlay
-        muted
-        className="w-40 h-40 sm:w-60 sm:h-60 md:w-96 md:h-96 object-cover rounded-full"
-        onLoadedMetadata={() => {
-          videoRef.current.playbackRate = 3;
-        }}
-        onEnded={() => window.location.reload()}
-        style={{ transform: "scale(1.1)" }}
-      />
+    <div className="w-full flex flex-col justify-center items-center">
+      {videoError ? (
+        // Fallback content when video isn't available
+        <div className="text-center p-8">
+          <div className="text-green-600 text-xl mb-4">
+            Registration Successful!
+          </div>
+          <Leaf className="w-16 h-16 mx-auto text-green-500 animate-bounce" />
+        </div>
+      ) : (
+        <video
+          ref={videoRef}
+          src="/plant_gif.mp4"
+          autoPlay
+          muted
+          playsInline
+          className="w-40 h-40 sm:w-60 sm:h-60 md:w-96 md:h-96 object-cover rounded-full"
+          onLoadedMetadata={() => {
+            if (videoRef.current) {
+              videoRef.current.playbackRate = 3;
+              setVideoLoaded(true);
+            }
+          }}
+          onError={() => setVideoError(true)}
+          onEnded={() => window.location.reload()}
+          style={{ transform: "scale(1.1)" }}
+        />
+      )}
     </div>
   );
 
