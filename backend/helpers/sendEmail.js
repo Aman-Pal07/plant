@@ -29,7 +29,7 @@ const generateCertificateHTML = ({
         }
 
         html, body {
-    width: 310mm; /* Standard A4 landscape width */
+  width: 297mm; /* Standard A4 landscape width */
             height: 210mm; /* Standard A4 landscape height */
             margin: 0;
             padding: 0;
