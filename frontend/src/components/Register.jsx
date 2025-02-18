@@ -167,8 +167,8 @@ const Register = () => {
   );
 
   return (
-    <div className="min-h-screen w-full bg-cover bg-center bg-[url('/Forest-Habitat.jpg')] overflow-x-hidden">
-      <div className="absolute h-[100vh] inset-0 bg-black opacity-40" />
+    <div className="min-h-screen w-full h-[100vh] bg-cover bg-center bg-[url('/Forest-Habitat.jpg')] overflow-x-hidden">
+      <div className="absolute  inset-0 bg-black opacity-40" />
 
       <div className="relative w-full min-h-screen flex flex-col items-center justify-start py-8 px-4">
         {/* Logo */}
