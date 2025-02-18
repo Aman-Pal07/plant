@@ -62,8 +62,9 @@ const Register = () => {
     setPopupMessage("");
 
     try {
+      // http://localhost:8000/api/auth/register
       const response = await fetch(
-        "https://plant-b9xj.onrender.com/api/auth/register",
+        "https://plant-b9xj.onrender.com/auth/register",
         {
           method: "POST",
           headers: {
@@ -206,11 +207,13 @@ const Register = () => {
           renderAnimation()
         ) : (
           <div className="bg-white/50 backdrop-blur-xl rounded-xl h-[510px] sm:rounded-2xl p-4 sm:p-6 md:p-8 shadow-2xl w-full max-w-[95vw] sm:max-w-xl mx-auto flex flex-col items-center justify-center">
-            <h2 className="text-lg sm:text-2xl md:text-3xl text-green-700 text-center mb-2 sm:mb-4 font-bold">
-              Plant a Tree &<br className="sm:hidden" /> Save the Earth
+            <h2 className="text-xl bg-clip-text text-transparent bg-gradient-to-l from-green-700 via-green-900 to-green-700 text-center pb-9 font-bold">
+              Plant a tree and make ESG Townhall Meeting on OIL'Environment
+              Strategy carbon neutral
             </h2>
+
             <p className="text-center text-gray-700 mb-4 sm:mb-6 text-xs sm:text-sm md:text-base px-2">
-              Join our growing community of tree-savers and nature lovers!
+              Join our growing community on 19 Feb, 2025
             </p>
 
             {renderForm()}

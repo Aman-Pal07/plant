@@ -15,7 +15,7 @@ const generateCertificateHTML = ({
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Certificate of Completion</title>
+    <title>Token of Gratitude</title>
     <style>
         @page {
             size: A4 landscape;
@@ -29,12 +29,13 @@ const generateCertificateHTML = ({
         }
 
         html, body {
-  width: 297mm; /* Standard A4 landscape width */
-            height: 210mm; /* Standard A4 landscape height */
+            width: 297mm;
+            height: 210mm;
             margin: 0;
             padding: 0;
             background: white;
             font-family: Arial, sans-serif;
+            overflow: hidden;
         }
 
         .certificate-wrapper {
@@ -43,181 +44,151 @@ const generateCertificateHTML = ({
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 0;
             background: white;
+            padding: 15mm;
         }
 
         .certificate {
-            width: 100%; /* Full width of A4 landscape */
-            height: 100%; /* Full height of A4 landscape */
+            width: 100%;
+            height: 100%;
             background: white;
             position: relative;
-            border-top: 10mm solid #15803d; /* Thick border at the top */
-            padding: 20mm; /* Padding to ensure content fits */
             display: flex;
             flex-direction: column;
             justify-content: space-between;
         }
 
-        .logo {
-            position: absolute;
-            margin:20px;
-            top: 10mm; /* Position from the top */
-            right: 10mm; /* Position from the right */
-            width: 30mm; /* Logo size */
-            height: 30mm; /* Logo size */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            height: 40mm;
         }
 
-        .logo img {
-            width: 100%;
-            height: 100%;
+        .logo {
+            width: 35mm;
+            height: 35mm;
             object-fit: contain;
         }
 
-        .header {
-            width: 60%; /* Header width */
-            background: linear-gradient(to right, #15803d, #22c55e);
-            color: white;
-            padding: 5mm 10mm; /* Padding for header */
-            border-top-left-radius: 2mm; /* Rounded corners */
-            border-top-right-radius: 2mm; /* Rounded corners */
+        .title {
+            text-align: center;
+            font-size: 32px;
+            font-weight: bold;
+            margin: 15px 0;
+            color: #15803d;
         }
 
-        .header h1 {
-            font-size: 8mm; /* Header font size */
-            font-weight: 800;
-            text-transform: none;
-            white-space: nowrap;
+        .name {
+            text-align: center;
+            font-size: 36px;
+            text-decoration: underline;
+            text-decoration-color: #22c55e;
+            text-decoration-thickness: 1px;
+            margin: 20px 0;
+            color: #0d7230;
+            font-weight: bold;
         }
 
         .content {
-           padding-top: 3rem;
-        
+            text-align: justify;
+            line-height: 1.5;
+            margin: 10px 0;
+            color: #374151;
+            padding: 0 20px;
+        }
+
+        .main-text {
+            margin: 15px 0;
+            font-size: 18px;
             text-align: center;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            margin-top: 10mm; /* Margin from the header */
         }
 
-        .intro {
-        margin-top: 4rem;
-            color: #374151;
-            font-size: 13mm; /* Intro font size */
-            margin-bottom: 5mm; /* Margin below intro */
-            white-space: nowrap;
+        .date-location {
+            margin: 15px 0;
+            font-size: 18px;
+            text-align: center;
         }
 
-        .recipient {
-        margin-top: 2rem;
-            color: #0d7230;
-            font-size: 23mm; /* Recipient name font size */
-            font-weight: 800;
-            margin: 5mm 0; /* Margin around recipient name */
-            text-decoration: underline;
-            text-decoration-color: #22c55e;
-            text-underline-offset: 2mm; /* Underline offset */
-        }
-
-        .description {
-           margin-top: 1rem;
-            color: #374151;
-            max-width: 80%; /* Description width */
-            margin: 5mm auto; /* Margin around description */
-            font-size: 7mm; /* Description font size */
-            line-height: 1.625;
-        }
-
-        .academy-name {
-            font-weight: 700;
-            color: #1e5531;
-        }
-
-        .date {
-           margin-top: 3rem;
-                    margin-bottom: 3rem;
-
-            color: #4b5563;
-            font-size: 8mm; /* Date font size */
-            font-weight: 500;
-            margin-top: 5mm; /* Margin above date */
+        .appreciation-text {
+            margin: 15px 0;
+            font-size: 18px;
+            text-align: center;
+            padding: 0 40px;
         }
 
         .divider {
-           margin-top: 4rem;
-            border-top: 1mm solid #e5e7eb; /* Divider line */
-            width: 100%;
-            margin: 5mm 0; /* Margin around divider */
+            border-top: 0.5mm solid #e5e7eb;
+            width: 90%;
+            margin: 15px auto;
         }
 
         .button-container {
-        padding-top:3rem;
             text-align: center;
-            margin-top: 5mm; /* Margin above button */
+            margin: 15px 0 20px 0;
         }
 
         .location-button {
             background-color: #15803d;
             color: white;
-            padding: 3mm 6mm; /* Button padding */
-            border-radius: 2mm; /* Button border radius */
+            padding: 8px 20px;
+            border-radius: 4px;
             border: none;
             text-decoration: none;
             display: inline-block;
-            font-size: 8mm; /* Button font size */
+            font-size: 16px;
             font-weight: 500;
+        }
+
+        strong {
+            color: #15803d;
         }
     </style>
 </head>
 <body>
     <div class="certificate-wrapper">
         <div class="certificate">
-            <div class="logo">
+            <div class="header">
                 <img
                     src="https://www.oil-india.com/files/inline-images/OILLOGOWITHOUTBACKGROUND.png"
-                    alt="Logo"
+                    alt="Oil India Logo"
+                    class="logo"
+                />
+                <img
+                    src="https://www.oil-india.com/files/inline-images/Santulan%20Logo%203%20copy.png"
+                    alt="Santulan Logo"
+                    class="logo"
                 />
             </div>
 
-            <div class="header">
-                <h1>Certificate of Completion</h1>
-            </div>
+            <div class="title">Token of Gratitude</div>
+
+            <div class="name">${name}</div>
 
             <div class="content">
-                <p class="intro">This Certificate of Completion is Presented to</p>
-                <h2 class="recipient">${name}</h2>
-                <p class="description">
-                    Thank you for your co-operation for signing this initiative from
-                    <span class="academy-name">OIL CLIMATE ACADEMY</span>
-                    for successfully completing the program aimed to enhance
-                    understanding and capabilities in addressing challenges related to
-                    climate change, sustainability & energy transition.
-                </p>
-                <p class="date" id="current-date"></p>
+                <div class="main-text">
+                    For your valuable participation in the
+                </div>
+
+                <div class="date-location">
+                    <strong>Townhall Meeting on OIL's Environmental Strategy held on 19<sup>th</sup> Feb, 2025 at Duliajan Club, Assam</strong>
+                    and your commitment to building a sustainable future.
+                </div>
+
+                <div class="appreciation-text">
+                    As a token of our appreciation for your involvement in this important conversation, we are pleased to present you with an <strong>e-plant gift</strong>, symbolizing our collective dedication to environmental stewardship and the fight against climate change.
+                </div>
             </div>
 
             <div>
                 <div class="divider"></div>
                 <div class="button-container">
-                    <a
-                        href="https://maps.app.goo.gl/xTyGAKBoTb2CXxtc7"
-                        class="location-button"
-                    >View Plant Location</a>
+                    <a href="https://maps.app.goo.gl/xTyGAKBoTb2CXxtc7" class="location-button">View Plant Location</a>
                 </div>
             </div>
         </div>
     </div>
-
-    <script>
-        const currentDateElement = document.getElementById("current-date");
-        const currentDate = new Date();
-        const options = { year: "numeric", month: "long", day: "numeric" };
-        currentDateElement.textContent = currentDate.toLocaleDateString(
-            "en-US",
-            options
-        );
-    </script>
 </body>
 </html>
   `;
@@ -229,14 +200,14 @@ const generatePDF = async (html, outputPath) => {
       format: "A4",
       orientation: "landscape",
       border: "0",
-      height: "215mm", // Standard A4 height in landscape
-      width: "310mm", // Standard A4 width in landscape
+      height: "210mm", // Exact A4 landscape height
+      width: "297mm", // Exact A4 landscape width
       type: "pdf",
       renderDelay: 1000,
-      zoomFactor: 1, // Prevent any automatic scaling
+      zoomFactor: 1,
       printBackground: true,
       preferCSSPageSize: true,
-      pageRanges: "1", // Only generate first page
+      pageRanges: "1",
     };
 
     htmlPdf.create(html, options).toFile(outputPath, (err, res) => {
@@ -267,10 +238,10 @@ const sendEmail = async (to, subject, certificateData) => {
       from: process.env.SMPT_MAIL,
       to,
       subject,
-      text: `Dear ${certificateData.name},\n\nPlease find attached your Certificate of Completion from OIL CLIMATE ACADEMY.\n\nBest regards,\nOIL CLIMATE ACADEMY Team`,
+      text: `Dear ${certificateData.name},\n\nPlease find attached your Token of Gratitude from OIL INDIA.\n\nBest regards,\nOIL INDIA Team`,
       attachments: [
         {
-          filename: "Certificate.pdf",
+          filename: "Token_of_Gratitude.pdf",
           path: pdfPath,
           contentType: "application/pdf",
         },
