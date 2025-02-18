@@ -12,124 +12,131 @@ const generateCertificateHTML = ({
   return `
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=297mm, height=210mm" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=297mm, height=210mm">
     <title>Certificate</title>
     <style>
-      @page {
-        size: A4 landscape;
-        margin: 0;
-      }
+        @page {
+            size: A4 landscape;
+            margin: 0;
+        }
 
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-      html,
-      body {
-        width: 297mm;
-        height: 210mm;
-        background: white;
-        font-family: Arial, sans-serif;
-        overflow: hidden;
-      }
+        html, body {
+            width: 297mm;
+            height: 210mm;
+            background: white;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
 
-      .certificate {
-        width: 100%;
-        height: 100%;
-        padding: 20mm;
-        position: relative;
-        display: flex;
-        flex-direction: column;
-      }
+        .certificate {
+            width: 100%;
+            height: 100%;
+            padding: 15mm;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-      .header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        height: 35mm;
-      }
+        .header {
+            position: relative;
+            width: 100%;
+            height: 30mm;
+            margin-bottom: 10mm;
+        }
 
-      .logo {
-        width: 30mm;
-        height: 30mm;
-        object-fit: contain;
-      }
+        .logo-left {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 25mm;
+            height: 25mm;
+            object-fit: contain;
+        }
 
-      .title {
-        text-align: center;
-        font-size: 36px;
-        color: #15803d;
-        font-weight: bold;
-        margin: 15mm 0 10mm 0;
-      }
+        .logo-right {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 25mm;
+            height: 25mm;
+            object-fit: contain;
+        }
 
-      .name-container {
-        text-align: center;
-        margin-bottom: 10mm;
-      }
+        .title {
+            text-align: center;
+            font-size: 32px;
+            color: #15803d;
+            font-weight: bold;
+            margin-bottom: 15mm;
+        }
 
-      .name {
-        font-size: 32px;
-        color: #0d7230;
-        padding-bottom: 2mm;
-        border-bottom: 0.5mm solid #22c55e;
-        display: inline-block;
-      }
+        .name-container {
+            text-align: center;
+            margin-bottom: 15mm;
+            width: 100%;
+        }
 
-      .content {
-        text-align: center;
-        line-height: 1.6;
-        color: #374151;
-        font-size: 16px;
-      }
+        .name {
+            font-size: 28px;
+            color: #0d7230;
+            padding-bottom: 2mm;
+            border-bottom: 0.5mm solid #22c55e;
+            display: inline-block;
+        }
 
-      .content p {
-        margin: 5mm 0;
-      }
+        .content {
+            text-align: center;
+            line-height: 1.5;
+            color: #374151;
+            font-size: 16px;
+            max-width: 200mm;
+            margin: 0 auto;
+        }
 
-      strong {
-        color: #166534;
-      }
+        .content p {
+            margin-bottom: 10mm;
+        }
+
+        strong {
+            color: #166534;
+        }
+
+        sup {
+            font-size: 60%;
+        }
     </style>
-  </head>
-  <body>
+</head>
+<body>
     <div class="certificate">
-      <div class="header">
-        <img src="/api/placeholder/120/120" alt="Oil India Logo" class="logo" />
-        <img src="/api/placeholder/120/120" alt="Santulan Logo" class="logo" />
-      </div>
-
-      <div class="title">Token of Gratitude</div>
-
-      <div class="name-container">
-        <div class="name">${name}</div>
-      </div>
-
-      <div class="content">
-        <p>
-          For your valuable participation in the<br />
-          <strong
-            >Townhall Meeting on OIL's Environmental Strategy held on 19<sup
-              >th</sup
-            >
-            Feb, 2025 at Duliajan Club, Assam</strong
-          ><br />
-          and your commitment to building a sustainable future.
-        </p>
-
-        <p>
-          As a token of our appreciation for your involvement in this important
-          conversation, we are pleased to present you with an
-          <strong>e-plant gift</strong>, symbolizing our collective dedication
-          to environmental stewardship and the fight against climate change.
-        </p>
-      </div>
+        <div class="header">
+            <img src="https://www.oil-india.com/files/inline-images/OILLOGOWITHOUTBACKGROUND.png" alt="Oil India Logo" class="logo-left" />
+            <img src="https://www.oil-india.com/files/inline-images/Santulan%20Logo%203%20copy.png" alt="Santulan Logo" class="logo-right" />
+        </div>
+        
+        <div class="title">Token of Gratitude</div>
+        
+        <div class="name-container">
+            <div class="name">${name}</div>
+        </div>
+        
+        <div class="content">
+            <p>For your valuable participation in the<br>
+            <strong>Townhall Meeting on OIL's Environmental Strategy held on 19<sup>th</sup> Feb, 2025 at Duliajan Club, Assam</strong><br>
+            and your commitment to building a sustainable future.</p>
+            
+            <p>As a token of our appreciation for your involvement in this important conversation, we are pleased to present you with an <strong>e-plant gift</strong>, symbolizing our collective dedication to environmental stewardship and the fight against climate change.</p>
+        </div>
     </div>
-  </body>
+</body>
 </html>
   `;
 };
