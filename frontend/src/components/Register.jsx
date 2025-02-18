@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import { User, Mail, PhoneCall, Leaf } from "lucide-react";
+import CarbonEmissionChart from "../CarbonEmissionChart";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -179,26 +180,27 @@ const Register = () => {
       </button>
     </form>
   );
-
   const renderAnimation = () => (
-    <div className="w-full flex justify-center items-center">
+    <div className="w-full flex justify-center items-start mt-[-10rem]">
       <video
         ref={videoRef}
         src="/plant_gif.mp4"
         autoPlay
         muted
-        className="w-40 h-40 sm:w-60 sm:h-60 md:w-96 md:h-96 object-cover rounded-full"
+        className="w-[800px] h-[800px] sm:w-80 sm:h-80 md:w-[600px] md:h-[600px]"
         onLoadedMetadata={() => {
           videoRef.current.playbackRate = 3;
         }}
-        onEnded={() => window.location.reload()}
-        style={{ transform: "scale(1.1)" }}
+        onEnded={() => {
+          setVideoEnded(true);
+          setShowAnimation(false);
+        }}
+        style={{ transform: "scale(1.2)" }}
       />
     </div>
   );
-
   return (
-    <div className="min-h-screen w-full bg-cover bg-center overflow-x-hidden mt-[-30px] flex items-center justify-center">
+    <div className="min-h-screen w-full bg-cover bg-center overflow-x-hidden flex items-center justify-center">
       <div className="relative w-full min-h-screen flex flex-col items-center justify-start py-8 px-4">
         {popupMessage && renderPopup()}
 
@@ -212,13 +214,21 @@ const Register = () => {
             </h2>
 
             <p className="text-center text-gray-700 mb-4 sm:mb-6 text-xs sm:text-sm md:text-base px-2">
-              Join our growing community on 19 Feb, 2025
+              Join our growing community on 19 Feb, 2025 and make a positive
+              impact on the environment. Register now!
             </p>
 
             {renderForm()}
           </div>
         )}
+
+        {/* Conditionally render CarbonEmissionChart */}
       </div>
+      {!showAnimation && (
+        <div className="w-full mt-[-8.9rem]">
+          <CarbonEmissionChart />
+        </div>
+      )}
     </div>
   );
 };
