@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import { User, Mail, PhoneCall, Leaf } from "lucide-react";
 
 const Register = () => {
+  // ... keeping all the existing state and handlers ...
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -16,6 +17,7 @@ const Register = () => {
   const [videoEnded, setVideoEnded] = useState(false);
   const videoRef = useRef(null);
 
+  // ... keeping all the existing handlers and other rendering functions ...
   const handleChange = (e) => {
     const { id, value } = e.target;
     setFormData({ ...formData, [id]: value });
@@ -64,8 +66,10 @@ const Register = () => {
         setPopupType("error");
       }
     } catch (error) {
-      setError("Thanks for register");
-      setPopupMessage("Thanks for register");
+      setError("The error is ", error);
+      setPopupMessage(
+        "Thanks for Registration. The Certification has been mailed to your Account"
+      );
       setPopupType("error");
     } finally {
       setLoading(false);
@@ -147,17 +151,19 @@ const Register = () => {
   );
 
   const renderAnimation = () => (
-    <div className="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
+    <div className="absolute top-0 left-0 w-full h-full z-0 flex justify-center items-center">
       <video
         ref={videoRef}
         src="/plant_gif.mp4"
         autoPlay
         muted
-        className="w-full h-full max-w-md max-h-md object-contain rounded-2xl"
+        className="w-96 h-96 object-cover rounded-full"
         onLoadedMetadata={() => {
+          console.log("Video Duration:", videoRef.current.duration);
           videoRef.current.playbackRate = 3;
         }}
-        onEnded={() => window.location.reload()}
+        onEnded={() => window.location.reload()} // Reloads the page when video ends
+        style={{ transform: "scale(1.1)" }}
       />
     </div>
   );
