@@ -181,10 +181,10 @@ const Register = () => {
     </form>
   );
   const renderAnimation = () => (
-    <div className="w-full flex justify-center items-start mt-[-10rem]">
+    <div className="w-full flex justify-center items-start  md:mt-3">
       <video
         ref={videoRef}
-        src="/plant_gif.mp4"
+        src="../../public/plant_gif.mp4"
         autoPlay
         muted
         className="w-[800px] h-[800px] sm:w-80 sm:h-80 md:w-[600px] md:h-[600px]"
@@ -199,6 +199,7 @@ const Register = () => {
       />
     </div>
   );
+
   return (
     <div className="min-h-screen w-full bg-cover bg-center overflow-x-hidden flex items-center justify-center">
       <div className="relative w-full min-h-screen flex flex-col items-center justify-start py-8 px-4">
