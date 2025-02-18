@@ -39,26 +39,27 @@ const generateCertificateHTML = ({
         .certificate {
             width: 100%;
             height: 100%;
-            padding: 15mm;
+            padding: 12mm;
             position: relative;
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: space-between;
         }
 
         .header {
             position: relative;
             width: 100%;
-            height: 30mm;
-            margin-bottom: 10mm;
+            height: 25mm;
+            margin-bottom: 5mm;
         }
 
         .logo-left {
             position: absolute;
             left: 0;
             top: 0;
-            width: 25mm;
-            height: 25mm;
+            width: 22mm;
+            height: 22mm;
             object-fit: contain;
         }
 
@@ -66,44 +67,49 @@ const generateCertificateHTML = ({
             position: absolute;
             right: 0;
             top: 0;
-            width: 25mm;
-            height: 25mm;
+            width: 22mm;
+            height: 22mm;
             object-fit: contain;
         }
 
         .title {
             text-align: center;
-            font-size: 32px;
+            font-size: 28px;
             color: #15803d;
             font-weight: bold;
-            margin-bottom: 15mm;
+            margin-bottom: 8mm;
+            margin-top: -5mm;
         }
 
         .name-container {
             text-align: center;
-            margin-bottom: 15mm;
+            margin-bottom: 8mm;
             width: 100%;
         }
 
         .name {
-            font-size: 28px;
+            font-size: 24px;
             color: #0d7230;
-            padding-bottom: 2mm;
+            padding-bottom: 1mm;
             border-bottom: 0.5mm solid #22c55e;
             display: inline-block;
         }
 
         .content {
             text-align: center;
-            line-height: 1.5;
+            line-height: 1.4;
             color: #374151;
-            font-size: 16px;
-            max-width: 200mm;
+            font-size: 14px;
+            max-width: 180mm;
             margin: 0 auto;
         }
 
         .content p {
-            margin-bottom: 10mm;
+            margin-bottom: 8mm;
+        }
+
+        .content p:last-child {
+            margin-bottom: 0;
         }
 
         strong {
@@ -112,6 +118,10 @@ const generateCertificateHTML = ({
 
         sup {
             font-size: 60%;
+        }
+
+        br {
+            line-height: 1.2;
         }
     </style>
 </head>
