@@ -168,7 +168,7 @@ const Register = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center bg-cover bg-center bg-[url('/Forest-Habitat.jpg')] px-2 sm:px-4 py-4 sm:py-6">
-      <div className="absolute w-full inset-0 bg-black opacity-40"></div>
+      <div className="absolute h-full inset-0 bg-black opacity-40"></div>
 
       <div className="relative w-full flex flex-col items-center ">
         {/* Logo */}
