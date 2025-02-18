@@ -74,7 +74,7 @@ const generateCertificateHTML = ({
 
         .title {
             text-align: center;
-            font-size: 28px;
+            font-size: 32px;
             color: #15803d;
             font-weight: bold;
             margin-bottom: 8mm;
@@ -88,7 +88,7 @@ const generateCertificateHTML = ({
         }
 
         .name {
-            font-size: 24px;
+            font-size: 28px;
             color: #0d7230;
             padding-bottom: 1mm;
             border-bottom: 0.5mm solid #22c55e;
@@ -99,7 +99,7 @@ const generateCertificateHTML = ({
             text-align: center;
             line-height: 1.4;
             color: #374151;
-            font-size: 14px;
+            font-size: 18px;
             max-width: 180mm;
             margin: 0 auto;
         }
@@ -139,9 +139,8 @@ const generateCertificateHTML = ({
         </div>
         
         <div class="content">
-            <p>For your valuable participation in the<br>
-            <strong>Townhall Meeting on OIL's Environmental Strategy held on 19<sup>th</sup> Feb, 2025 at Duliajan Club, Assam</strong><br>
-            and your commitment to building a sustainable future.</p>
+            <p>For your valuable participation in the
+           Townhall Meeting on OIL's Environmental Strategy held on 19<sup>th</sup> Feb, 2025 at Duliajan Club, Assam and your commitment to building a sustainable future.</p>
             
             <p>As a token of our appreciation for your involvement in this important conversation, we are pleased to present you with an <strong>e-plant gift</strong>, symbolizing our collective dedication to environmental stewardship and the fight against climate change.</p>
         </div>
