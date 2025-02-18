@@ -105,8 +105,9 @@ const generateCertificateHTML = ({
         .intro {
         margin-top: 4rem;
             color: #374151;
-            font-size: 15mm; /* Intro font size */
+            font-size: 13mm; /* Intro font size */
             margin-bottom: 5mm; /* Margin below intro */
+            white-space: nowrap;
         }
 
         .recipient {
