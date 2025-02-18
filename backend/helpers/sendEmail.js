@@ -29,8 +29,8 @@ const generateCertificateHTML = ({
         }
 
         html, body {
-            width: 240mm;
-            height: 220mm;
+            width: 235mm;
+            height: 230mm;
             background: white;
             font-family: Arial, sans-serif;
             overflow: hidden;
