@@ -150,7 +150,7 @@ const Register = () => {
   );
 
   const renderAnimation = () => (
-    <div className="mt-6 sm:mt-10 w-full flex justify-center items-center">
+    <div className="w-full flex justify-center items-center">
       <video
         ref={videoRef}
         src="/plant_gif.mp4"
@@ -167,12 +167,12 @@ const Register = () => {
   );
 
   return (
-    <div className="min-h-screen flex flex-col items-center bg-cover bg-center bg-[url('/Forest-Habitat.jpg')] px-2 sm:px-4 py-4 sm:py-6">
-      <div className="absolute h-full inset-0 bg-black opacity-40"></div>
+    <div className="min-h-screen w-full bg-cover bg-center bg-[url('/Forest-Habitat.jpg')] overflow-x-hidden">
+      <div className="absolute inset-0 bg-black opacity-40" />
 
-      <div className="relative w-full flex flex-col items-center ">
+      <div className="relative w-full min-h-screen flex flex-col items-center justify-start py-8 px-4">
         {/* Logo */}
-        <div className="w-20 sm:w-32 md:w-40 mb-8 sm:mb-12 md:mb-16">
+        <div className="w-20 sm:w-32 md:w-40 mb-8">
           <img
             src="https://www.oil-india.com/files/inline-images/OILLOGOWITHBACKGROUND.png"
             alt="Logo"
@@ -185,7 +185,7 @@ const Register = () => {
         {showAnimation && !videoEnded ? (
           renderAnimation()
         ) : (
-          <div className="bg-white/50 backdrop-blur-lg rounded-xl sm:rounded-2xl p-3 sm:p-6 md:p-8 shadow-2xl w-full max-w-[90vw] sm:max-w-md mx-auto">
+          <div className="bg-white/50 backdrop-blur-lg rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 shadow-2xl w-full max-w-[90vw] sm:max-w-md mx-auto">
             <h2 className="text-lg sm:text-2xl md:text-3xl text-green-700 text-center mb-2 sm:mb-4 font-bold">
               Plant a Tree &<br className="sm:hidden" /> Save the Earth
             </h2>
