@@ -12,113 +12,125 @@ const generateCertificateHTML = ({
   return `
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=297mm, height=210mm">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=297mm, height=210mm" />
     <title>Certificate</title>
     <style>
-        @page {
-            size: A4 landscape;
-            margin: 0;
-        }
+      @page {
+        size: A4 landscape;
+        margin: 0;
+      }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-        html, body {
-            width: 297mm;
-            height: 210mm;
-            background: white;
-            font-family: Arial, sans-serif;
-            overflow: hidden;
-        }
+      html,
+      body {
+        width: 297mm;
+        height: 210mm;
+        background: white;
+        font-family: Arial, sans-serif;
+        overflow: hidden;
+      }
 
-        .certificate {
-            width: 100%;
-            height: 100%;
-            padding: 20mm;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-        }
+      .certificate {
+        width: 100%;
+        height: 100%;
+        padding: 20mm;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+      }
 
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            height: 35mm;
-        }
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        height: 35mm;
+      }
 
-        .logo {
-            width: 30mm;
-            height: 30mm;
-            object-fit: contain;
-        }
+      .logo {
+        width: 30mm;
+        height: 30mm;
+        object-fit: contain;
+      }
 
-        .title {
-            text-align: center;
-            font-size: 36px;
-            color: #15803d;
-            font-weight: bold;
-            margin: 15mm 0 10mm 0;
-        }
+      .title {
+        text-align: center;
+        font-size: 36px;
+        color: #15803d;
+        font-weight: bold;
+        margin: 15mm 0 10mm 0;
+      }
 
-        .name-container {
-            text-align: center;
-            margin-bottom: 10mm;
-        }
+      .name-container {
+        text-align: center;
+        margin-bottom: 10mm;
+      }
 
-        .name {
-            font-size: 32px;
-            color: #0d7230;
-            padding-bottom: 2mm;
-            border-bottom: 0.5mm solid #22c55e;
-            display: inline-block;
-        }
+      .name {
+        font-size: 32px;
+        color: #0d7230;
+        padding-bottom: 2mm;
+        border-bottom: 0.5mm solid #22c55e;
+        display: inline-block;
+      }
 
-        .content {
-            text-align: center;
-            line-height: 1.6;
-            color: #374151;
-            font-size: 16px;
-        }
+      .content {
+        text-align: center;
+        line-height: 1.6;
+        color: #374151;
+        font-size: 16px;
+      }
 
-        .content p {
-            margin: 5mm 0;
-        }
+      .content p {
+        margin: 5mm 0;
+      }
 
-        strong {
-            color: #166534;
-        }
+      strong {
+        color: #166534;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="certificate">
-        <div class="header">
-            <img src="/api/placeholder/120/120" alt="Oil India Logo" class="logo" />
-            <img src="/api/placeholder/120/120" alt="Santulan Logo" class="logo" />
-        </div>
-        
-        <div class="title">Token of Gratitude</div>
-        
-        <div class="name-container">
-            <div class="name">${name}</div>
-        </div>
-        
-        <div class="content">
-            <p>For your valuable participation in the<br>
-            <strong>Townhall Meeting on OIL's Environmental Strategy held on 19<sup>th</sup> Feb, 2025 at Duliajan Club, Assam</strong><br>
-            and your commitment to building a sustainable future.</p>
-            
-            <p>As a token of our appreciation for your involvement in this important conversation, we are pleased to present you with an <strong>e-plant gift</strong>, symbolizing our collective dedication to environmental stewardship and the fight against climate change.</p>
-        </div>
-    </div>
-</body>
-</html>
+      <div class="header">
+        <img src="/api/placeholder/120/120" alt="Oil India Logo" class="logo" />
+        <img src="/api/placeholder/120/120" alt="Santulan Logo" class="logo" />
+      </div>
 
+      <div class="title">Token of Gratitude</div>
+
+      <div class="name-container">
+        <div class="name">${name}</div>
+      </div>
+
+      <div class="content">
+        <p>
+          For your valuable participation in the<br />
+          <strong
+            >Townhall Meeting on OIL's Environmental Strategy held on 19<sup
+              >th</sup
+            >
+            Feb, 2025 at Duliajan Club, Assam</strong
+          ><br />
+          and your commitment to building a sustainable future.
+        </p>
+
+        <p>
+          As a token of our appreciation for your involvement in this important
+          conversation, we are pleased to present you with an
+          <strong>e-plant gift</strong>, symbolizing our collective dedication
+          to environmental stewardship and the fight against climate change.
+        </p>
+      </div>
+    </div>
+  </body>
+</html>
   `;
 };
 
