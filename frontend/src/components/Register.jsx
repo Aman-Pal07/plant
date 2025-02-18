@@ -5,7 +5,7 @@ const Register = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    phone: "",
+    phone: "", // Optional field
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -19,14 +19,65 @@ const Register = () => {
   const handleChange = (e) => {
     const { id, value } = e.target;
     setFormData({ ...formData, [id]: value });
+    // Clear any existing errors when user starts typing
+    setError("");
+    setPopupMessage("");
+  };
+
+  const validateForm = () => {
+    // Required fields validation
+    if (!formData.name.trim()) {
+      setError("Please enter your name!");
+      setPopupMessage("Please enter your name!");
+      setPopupType("error");
+      return false;
+    }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      setError("Please enter a valid email address!");
+      setPopupMessage("Please enter a valid email address!");
+      setPopupType("error");
+      return false;
+    }
+
+    // Phone validation (only if provided)
+    if (formData.phone.trim() !== "" && !/^\d{10}$/.test(formData.phone)) {
+      setError("If providing a phone number, it must be exactly 10 digits.");
+      setPopupMessage(
+        "If providing a phone number, it must be exactly 10 digits."
+      );
+      setPopupType("error");
+      return false;
+    }
+
+    return true;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Validate form before submission
+    if (!validateForm()) {
+      return;
+    }
+
     setLoading(true);
     setError("");
     setSuccess("");
     setPopupMessage("");
+
+    // Create request body, omitting phone entirely if it's empty
+    const requestBody = {
+      username: formData.name.trim(),
+      email: formData.email.trim().toLowerCase(),
+    };
+
+    // Only add phone to request body if it's not empty
+    if (formData.phone.trim()) {
+      requestBody.phone = formData.phone.trim();
+    }
 
     try {
       const response = await fetch(
@@ -36,26 +87,24 @@ const Register = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            username: formData.name,
-            email: formData.email,
-            phone: formData.phone,
-          }),
+          body: JSON.stringify(requestBody),
         }
       );
 
       const data = await response.json();
 
-      if (response.ok) {
+      if (response.ok && data.success) {
         setSuccess(data.message);
         setShowAnimation(true);
         setFormData({ name: "", email: "", phone: "" });
-        setPopupMessage("Registration Successful!");
+        setPopupMessage(data.message);
         setPopupType("success");
 
-        setTimeout(() => {
-          setShowAnimation(false);
-        }, videoRef.current.duration * 1000);
+        if (videoRef.current) {
+          setTimeout(() => {
+            setShowAnimation(false);
+          }, videoRef.current.duration * 1000);
+        }
       } else {
         setError(data.message || "Something went wrong. Please try again.");
         setPopupMessage(
@@ -64,9 +113,10 @@ const Register = () => {
         setPopupType("error");
       }
     } catch (error) {
-      setError("The error is ", error);
+      console.error("Registration error:", error);
+      setError("Network error. Please check your connection and try again.");
       setPopupMessage(
-        "Thanks for Registration. The Certification has been mailed to your Account"
+        "Network error. Please check your connection and try again."
       );
       setPopupType("error");
     } finally {
@@ -98,7 +148,7 @@ const Register = () => {
         <input
           type="text"
           id="name"
-          placeholder="Your full name"
+          placeholder="Your full name *"
           required
           value={formData.name}
           onChange={handleChange}
@@ -111,7 +161,7 @@ const Register = () => {
         <input
           type="email"
           id="email"
-          placeholder="Your email address"
+          placeholder="Your email address *"
           required
           value={formData.email}
           onChange={handleChange}
@@ -124,12 +174,16 @@ const Register = () => {
         <input
           type="tel"
           id="phone"
-          placeholder="Your phone number"
-          required
+          placeholder="Your phone number (optional)"
           value={formData.phone}
           onChange={handleChange}
           className="w-full pl-8 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-green-700 transition-all text-xs sm:text-sm md:text-base"
         />
+        {formData.phone && (
+          <p className="text-xs text-gray-500 mt-1 ml-2">
+            Phone number must be exactly 10 digits
+          </p>
+        )}
       </div>
 
       <button
@@ -168,10 +222,9 @@ const Register = () => {
 
   return (
     <div className="min-h-screen w-full h-[100vh] bg-cover bg-center bg-[url('/Forest-Habitat.jpg')] overflow-x-hidden">
-      <div className="absolute  inset-0 bg-black opacity-40" />
+      <div className="absolute inset-0 bg-black opacity-40" />
 
       <div className="relative w-full min-h-screen flex flex-col items-center justify-start py-8 px-4">
-        {/* Logo */}
         <div className="w-20 sm:w-32 md:w-40 mb-8">
           <img
             src="https://www.oil-india.com/files/inline-images/OILLOGOWITHBACKGROUND.png"

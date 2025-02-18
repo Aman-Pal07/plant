@@ -9,17 +9,18 @@ const UserSchema = new mongoose.Schema(
     email: {
       type: String,
       required: true,
-      unique: true, // Only email is unique
+      unique: true,
       trim: true,
       lowercase: true,
     },
     phone: {
       type: String,
-      required: true,
       trim: true,
       validate: {
         validator: function (value) {
-          // Check if the phone number is exactly 10 digits
+          // If no phone number provided, return true (validation passes)
+          if (!value || value === "No phone number provided") return true;
+          // Otherwise check if it's exactly 10 digits
           return /^\d{10}$/.test(value);
         },
         message: "Phone number must be exactly 10 digits.",

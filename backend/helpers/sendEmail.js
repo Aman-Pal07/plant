@@ -6,7 +6,6 @@ const fs = require("fs").promises;
 const generateCertificateHTML = ({
   name,
   email,
-  phone,
   certificateId,
   registrationDate,
 }) => {
