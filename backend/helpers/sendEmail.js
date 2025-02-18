@@ -29,7 +29,7 @@ const generateCertificateHTML = ({
         }
 
         html, body {
-            width: 250mm;
+            width: 260mm;
             height: 230mm;
             background: white;
             font-family: Arial, sans-serif;
