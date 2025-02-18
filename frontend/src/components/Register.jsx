@@ -186,7 +186,7 @@ const Register = () => {
       {showAnimation && !videoEnded ? (
         renderAnimation()
       ) : (
-        <div className="bg-white/50 backdrop-blur-lg rounded-xl sm:rounded-2xl p-3 sm:p-6 md:p-8 shadow-2xl w-full max-w-[90vw] sm:max-w-md mx-auto relative z-10 mt-16 sm:mt-20 md:mt-24 transition-transform duration-300">
+        <div className="bg-white/50 backdrop-blur-lg rounded-xl sm:rounded-2xl p-3 sm:p-6 md:p-8 shadow-2xl w-full max-w-[90vw] sm:max-w-md mx-auto relative  mt-16 sm:mt-20 md:mt-24 transition-transform duration-300">
           <h2 className="text-lg sm:text-2xl md:text-3xl text-green-700 text-center mb-2 sm:mb-4 font-bold">
             Plant a Tree &<br className="sm:hidden" /> Save the Earth
           </h2>
