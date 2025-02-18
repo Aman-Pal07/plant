@@ -53,63 +53,61 @@ const generateCertificateHTML = ({
             padding: 10mm;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             border: 1px solid #ddd;
+            text-align: center;
         }
 
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10mm;
+            margin-bottom: 5mm;
         }
 
         .logo-left {
-            width: 30mm;
-            height: 30mm;
+            width: 40mm;
+            height: auto;
             object-fit: contain;
         }
 
         .logo-right {
-            width: 25mm;
-            height: 25mm;
+            width: 35mm;
+            height: auto;
             object-fit: contain;
-            margin-left: 5mm;
         }
 
         .title {
-            text-align: center;
-            font-size: 28px;
+            font-size: 24px;
             font-weight: bold;
             color: #15803d;
+            margin-bottom: 4mm;
         }
 
         .name {
-            text-align: center;
-            font-size: 30px;
+            font-size: 26px;
             text-decoration: underline;
             text-decoration-color: #22c55e;
             text-decoration-thickness: 1px;
-            margin: 5mm 0;
+            margin: 4mm 0;
             color: #0d7230;
             font-weight: bold;
         }
 
         .content {
-            text-align: center;
             line-height: 1.4;
             color: #374151;
-            padding: 0 20mm;
-            font-size: 14px;
+            font-size: 13px;
+            padding: 0 15mm;
         }
 
         .main-text,
         .appreciation-text {
-            margin: 5mm 0;
+            margin: 3mm 0;
         }
 
         .divider {
             border-top: 0.5mm solid #e5e7eb;
             width: 80%;
-            margin: 10mm auto;
+            margin: 5mm auto;
         }
     </style>
 </head>
@@ -126,17 +124,15 @@ const generateCertificateHTML = ({
 
                 <div class="title">Token of Gratitude</div>
 
-                <!-- Top Right Images -->
-                <div>
-                    <img
-                        src="https://www.oil-india.com/files/inline-images/Santulan%20Logo%203%20copy.png"
-                        alt="Santulan Logo"
-                        class="logo-right"
-                    />
-                </div>
+                <!-- Top Right Image -->
+                <img
+                    src="https://www.oil-india.com/files/inline-images/Santulan%20Logo%203%20copy.png"
+                    alt="Santulan Logo"
+                    class="logo-right"
+                />
             </div>
 
-            <div class="name">${name}</div>
+            <div class="name">Aman Pal</div>
 
             <div class="content">
                 <div class="main-text">
@@ -153,6 +149,7 @@ const generateCertificateHTML = ({
     </div>
 </body>
 </html>
+
 
   `;
 };
