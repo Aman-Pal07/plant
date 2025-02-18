@@ -13,34 +13,17 @@ const Register = () => {
   const [showAnimation, setShowAnimation] = useState(false);
   const [popupMessage, setPopupMessage] = useState("");
   const [popupType, setPopupType] = useState("");
-  const [videoError, setVideoError] = useState(false);
-  const [videoLoaded, setVideoLoaded] = useState(false);
+  const [videoEnded, setVideoEnded] = useState(false);
   const videoRef = useRef(null);
-  React.useEffect(() => {
-    checkVideoAvailability();
-  }, []);
-
-  const checkVideoAvailability = async () => {
-    try {
-      const response = await fetch("/plant_gif.mp4", { method: "HEAD" });
-      if (!response.ok) {
-        setVideoError(true);
-      }
-    } catch (error) {
-      setVideoError(true);
-    }
-  };
 
   const handleChange = (e) => {
     const { id, value } = e.target;
     setFormData({ ...formData, [id]: value });
-    // Clear any existing errors when user starts typing
     setError("");
     setPopupMessage("");
   };
 
   const validateForm = () => {
-    // Required fields validation
     if (!formData.name.trim()) {
       setError("Please enter your name!");
       setPopupMessage("Please enter your name!");
@@ -48,7 +31,6 @@ const Register = () => {
       return false;
     }
 
-    // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
       setError("Please enter a valid email address!");
@@ -57,7 +39,6 @@ const Register = () => {
       return false;
     }
 
-    // Phone validation (only if provided)
     if (formData.phone.trim() !== "" && !/^\d{10}$/.test(formData.phone)) {
       setError("If providing a phone number, it must be exactly 10 digits.");
       setPopupMessage(
@@ -72,20 +53,16 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!validateForm()) {
       return;
     }
-
     setLoading(true);
     setError("");
     setSuccess("");
     setPopupMessage("");
 
     try {
-      // Use relative URL or environment variable for API endpoint
-      const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:8000";
-      const response = await fetch(`${apiUrl}/api/auth/register`, {
+      const response = await fetch("http://localhost:8000/api/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -95,35 +72,32 @@ const Register = () => {
           email: formData.email,
           phone: formData.phone,
         }),
-        // Add credentials if needed
-        credentials: "include",
       });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
 
       const data = await response.json();
 
-      setSuccess(data.message);
-      setFormData({ name: "", email: "", phone: "" });
-      setPopupMessage("Registration Successful!");
-      setPopupType("success");
-
-      // Only show animation if video is available
-      if (!videoError) {
+      if (response.ok) {
+        setSuccess(data.message);
         setShowAnimation(true);
-        // Set timeout based on actual video duration or fallback to 3 seconds
-        const duration = (videoRef.current?.duration || 3) * 1000;
+        setFormData({ name: "", email: "", phone: "" });
+        setPopupMessage("Registration Successful!");
+        setPopupType("success");
+
         setTimeout(() => {
           setShowAnimation(false);
-          window.location.reload();
-        }, duration);
+        }, videoRef.current.duration * 1000);
+      } else {
+        setError(data.message || "Something went wrong. Please try again.");
+        setPopupMessage(
+          data.message || "Something went wrong. Please try again."
+        );
+        setPopupType("error");
       }
     } catch (error) {
-      console.error("Registration error:", error);
-      setError("Registration failed. Please try again.");
-      setPopupMessage("Registration failed. Please try again.");
+      setError("The error is ", error);
+      setPopupMessage(
+        "Thanks for Registration. The Certification has been mailed to your Account"
+      );
       setPopupType("error");
     } finally {
       setLoading(false);
@@ -204,53 +178,34 @@ const Register = () => {
   );
 
   const renderAnimation = () => (
-    <div className="w-full flex flex-col justify-center items-center">
-      {videoError ? (
-        // Fallback content when video isn't available
-        <div className="text-center p-8">
-          <div className="text-green-600 text-xl mb-4">
-            Registration Successful!
-          </div>
-          <Leaf className="w-16 h-16 mx-auto text-green-500 animate-bounce" />
-        </div>
-      ) : (
-        <video
-          ref={videoRef}
-          src="/plant_gif.mp4"
-          autoPlay
-          muted
-          playsInline
-          className="w-40 h-40 sm:w-60 sm:h-60 md:w-96 md:h-96 object-cover rounded-full"
-          onLoadedMetadata={() => {
-            if (videoRef.current) {
-              videoRef.current.playbackRate = 3;
-              setVideoLoaded(true);
-            }
-          }}
-          onError={() => setVideoError(true)}
-          onEnded={() => window.location.reload()}
-          style={{ transform: "scale(1.1)" }}
-        />
-      )}
+    <div className="w-full flex justify-center items-center">
+      <video
+        ref={videoRef}
+        src="/plant_gif.mp4"
+        autoPlay
+        muted
+        className="w-40 h-40 sm:w-60 sm:h-60 md:w-96 md:h-96 object-cover rounded-full"
+        onLoadedMetadata={() => {
+          videoRef.current.playbackRate = 3;
+        }}
+        onEnded={() => window.location.reload()}
+        style={{ transform: "scale(1.1)" }}
+      />
     </div>
   );
 
   return (
-    <div className="min-h-screen w-full h-[100vh] bg-cover bg-center overflow-x-hidden mt-[-25px]">
-      {/* Optional overlay for darkening the background */}
-      {/* <div className="absolute inset-0 bg-black opacity-40" /> */}
-
-      <div className="relative w-full min-h-screen flex flex-col items-center justify-start py-8 px-4 sm:px-6 md:px-8">
+    <div className="min-h-screen w-full bg-cover bg-center overflow-x-hidden mt-[-30px] flex items-center justify-center">
+      <div className="relative w-full min-h-screen flex flex-col items-center justify-start py-8 px-4">
         {popupMessage && renderPopup()}
 
         {showAnimation && !videoEnded ? (
           renderAnimation()
         ) : (
-          <div className="bg-white/50 backdrop-blur-xl rounded-xl lg:h-[32rem] sm:rounded-2xl p-4 sm:p-6 md:p-8 shadow-2xl w-full max-w-[95vw] sm:max-w-xl mx-auto">
-            <h2 className="text-lg sm:text-2xl md:text-3xl text-green-700 text-center mb-2 sm:mb-4 font-bold lg:ml-[-1rem] whitespace-normal lg:whitespace-nowrap">
-              Plant a Tree & Save the Earth
+          <div className="bg-white/50 backdrop-blur-xl rounded-xl h-[510px] sm:rounded-2xl p-4 sm:p-6 md:p-8 shadow-2xl w-full max-w-[95vw] sm:max-w-xl mx-auto flex flex-col items-center justify-center">
+            <h2 className="text-lg sm:text-2xl md:text-3xl text-green-700 text-center mb-2 sm:mb-4 font-bold">
+              Plant a Tree &<br className="sm:hidden" /> Save the Earth
             </h2>
-
             <p className="text-center text-gray-700 mb-4 sm:mb-6 text-xs sm:text-sm md:text-base px-2">
               Join our growing community of tree-savers and nature lovers!
             </p>
