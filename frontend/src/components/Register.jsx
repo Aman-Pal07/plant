@@ -207,28 +207,29 @@ const Register = () => {
         {showAnimation && !videoEnded ? (
           renderAnimation()
         ) : (
-          <div className="bg-white/50 backdrop-blur-xl rounded-xl h-[510px] sm:rounded-2xl p-4 sm:p-6 md:p-8 shadow-2xl w-full max-w-[95vw] sm:max-w-xl mx-auto flex flex-col items-center justify-center">
-            <h2 className="text-xl bg-clip-text text-transparent bg-gradient-to-l from-green-700 via-green-900 to-green-700 text-center pb-9 font-bold">
-              Plant a tree and make ESG Townhall Meeting on OIL'Environment
-              Strategy carbon neutral
-            </h2>
+          <div className="w-full h-full flex flex-col lg:flex-row items-center justify-center gap-8">
+            {/* Left Side */}
+            <div className="w-full lg:w-1/2 h-full flex-1 flex flex-col items-center justify-center p-4 sm:p-6 md:p-8 bg-white/50 backdrop-blur-xl rounded-xl sm:rounded-2xl shadow-2xl">
+              <h2 className="text-xl bg-clip-text text-transparent bg-gradient-to-l from-green-700 via-green-900 to-green-700 text-center pb-9 font-bold">
+                Plant a tree and make ESG Townhall Meeting on OIL'Environment
+                Strategy carbon neutral
+              </h2>
 
-            <p className="text-center text-gray-700 mb-4 sm:mb-6 text-xs sm:text-sm md:text-base px-2">
-              Join our growing community on 19 Feb, 2025 and make a positive
-              impact on the environment. Register now!
-            </p>
+              <p className="text-center text-gray-700 mb-4 sm:mb-6 text-xs sm:text-sm md:text-base px-2">
+                Join our growing community on 19 Feb, 2025 and make a positive
+                impact on the environment. Register now!
+              </p>
 
-            {renderForm()}
+              {renderForm()}
+            </div>
+
+            {/* Right Side */}
+            <div className="w-full lg:w-1/2 h-full flex-1 flex items-center lg:mt-16 justify-center">
+              {!showAnimation && <CarbonEmissionChart />}
+            </div>
           </div>
         )}
-
-        {/* Conditionally render CarbonEmissionChart */}
       </div>
-      {!showAnimation && (
-        <div className="w-full mt-[-8.9rem]">
-          <CarbonEmissionChart />
-        </div>
-      )}
     </div>
   );
 };
