@@ -229,7 +229,7 @@ const generatePDF = async (html, outputPath) => {
       format: "A4",
       orientation: "landscape",
       border: "0",
-      height: "210mm", // Standard A4 height in landscape
+      height: "215mm", // Standard A4 height in landscape
       width: "297mm", // Standard A4 width in landscape
       type: "pdf",
       renderDelay: 1000,
