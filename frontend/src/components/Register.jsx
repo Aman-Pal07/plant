@@ -62,7 +62,6 @@ const Register = () => {
     setPopupMessage("");
 
     try {
-      // http://localhost:8000/api/auth/register
       const response = await fetch(
         "https://plant-b9xj.onrender.com/api/auth/register",
         {
