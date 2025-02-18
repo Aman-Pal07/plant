@@ -7,15 +7,14 @@ const Register = () => {
     email: "",
     phone: "",
   });
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [showAnimation, setShowAnimation] = useState(false);
   const [popupMessage, setPopupMessage] = useState("");
   const [popupType, setPopupType] = useState("");
-  const [videoEnded, setVideoEnded] = useState(false); // Track when video ends
-  const videoRef = useRef(null); // Create reference to video element
+  const [videoEnded, setVideoEnded] = useState(false);
+  const videoRef = useRef(null);
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -27,7 +26,7 @@ const Register = () => {
     setLoading(true);
     setError("");
     setSuccess("");
-    setPopupMessage(""); // Reset popup message before submitting
+    setPopupMessage("");
 
     try {
       const response = await fetch(
@@ -54,10 +53,9 @@ const Register = () => {
         setPopupMessage("Registration Successful!");
         setPopupType("success");
 
-        // Reset animation after a delay, so the user sees the entire video
         setTimeout(() => {
           setShowAnimation(false);
-        }, videoRef.current.duration * 1000); // Delay based on the video's actual duration
+        }, videoRef.current.duration * 1000);
       } else {
         setError(data.message || "Something went wrong. Please try again.");
         setPopupMessage(
@@ -75,19 +73,26 @@ const Register = () => {
   };
 
   const renderPopup = () => (
-    <div
-      className={`fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 bg-white text-black border ${
-        popupType === "success" ? "border-green-500" : "border-red-500"
-      }`}
-    >
-      {popupMessage}
+    <div className="fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 bg-white text-black border max-w-[90vw] md:max-w-md transition-all duration-300 ease-in-out transform hover:scale-105">
+      <div
+        className={`${
+          popupType === "success"
+            ? "border-l-4 border-green-500"
+            : "border-l-4 border-red-500"
+        } pl-4`}
+      >
+        {popupMessage}
+      </div>
     </div>
   );
 
   const renderForm = () => (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+    <form
+      onSubmit={handleSubmit}
+      className="flex flex-col gap-4 w-full max-w-sm mx-auto"
+    >
       <div className="relative">
-        <User className="text-green-400 absolute left-4 top-1/2 transform -translate-y-1/2" />
+        <User className="text-green-400 absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5" />
         <input
           type="text"
           id="name"
@@ -95,12 +100,12 @@ const Register = () => {
           required
           value={formData.name}
           onChange={handleChange}
-          className="w-full pl-12 pr-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-green-700 transition-all"
+          className="w-full pl-10 pr-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-green-700 transition-all text-base sm:text-lg"
         />
       </div>
 
       <div className="relative">
-        <Mail className="text-green-400 absolute left-4 top-1/2 transform -translate-y-1/2" />
+        <Mail className="text-green-400 absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5" />
         <input
           type="email"
           id="email"
@@ -108,12 +113,12 @@ const Register = () => {
           required
           value={formData.email}
           onChange={handleChange}
-          className="w-full pl-12 pr-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-green-700 transition-all"
+          className="w-full pl-10 pr-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-green-700 transition-all text-base sm:text-lg"
         />
       </div>
 
       <div className="relative">
-        <PhoneCall className="text-green-400 absolute left-4 top-1/2 transform -translate-y-1/2" />
+        <PhoneCall className="text-green-400 absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5" />
         <input
           type="tel"
           id="phone"
@@ -121,20 +126,20 @@ const Register = () => {
           required
           value={formData.phone}
           onChange={handleChange}
-          className="w-full pl-12 pr-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-green-700 transition-all"
+          className="w-full pl-10 pr-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-green-700 transition-all text-base sm:text-lg"
         />
       </div>
 
       <button
         type="submit"
         disabled={loading}
-        className="bg-gradient-to-r from-green-800 to-green-400 text-white rounded-lg py-3 sm:py-4 mt-4 flex justify-center items-center gap-2 hover:from-green-900 hover:to-green-500 transition-transform transform hover:-translate-y-1 shadow-lg disabled:opacity-50"
+        className="bg-gradient-to-r from-green-800 to-green-400 text-white rounded-lg py-3 px-6 mt-4 flex justify-center items-center gap-2 hover:from-green-900 hover:to-green-500 transition-all transform hover:-translate-y-1 shadow-lg disabled:opacity-50 text-base sm:text-lg font-medium"
       >
         {loading ? (
           "Registering..."
         ) : (
           <>
-            <Leaf className="text-white" /> Plant & Grow Together
+            <Leaf className="text-white w-5 h-5" /> Plant & Grow Together
           </>
         )}
       </button>
@@ -142,49 +147,45 @@ const Register = () => {
   );
 
   const renderAnimation = () => (
-    <div className="absolute top-0 left-0 w-full h-full z-0 flex justify-center items-center">
+    <div className="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
       <video
         ref={videoRef}
         src="/plant_gif.mp4"
         autoPlay
         muted
-        className="w-96 h-96 object-cover rounded-full"
+        className="w-full h-full max-w-md max-h-md object-contain rounded-2xl"
         onLoadedMetadata={() => {
-          console.log("Video Duration:", videoRef.current.duration);
           videoRef.current.playbackRate = 3;
         }}
-        onEnded={() => window.location.reload()} // Reloads the page when video ends
-        style={{ transform: "scale(1.1)" }}
+        onEnded={() => window.location.reload()}
       />
     </div>
   );
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-cover bg-center relative bg-[url('/Forest-Habitat.jpg')]">
+    <div className="min-h-screen flex flex-col justify-center items-center bg-cover bg-center relative bg-[url('/Forest-Habitat.jpg')] px-4 py-6">
       <div className="absolute inset-0 bg-black opacity-40 z-0"></div>
 
-      {/* Logo at the top center */}
-      <div className="absolute top-4 bg-white left-1/2 transform -translate-x-1/2 z-10">
+      {/* Logo */}
+      <div className="absolute top-4 left-1/2 transform bg-white -translate-x-1/2 z-10 w-full max-w-[200px] px-4">
         <img
           src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Oil_India_Logo.svg/800px-Oil_India_Logo.svg.png"
           alt="Logo"
-          className="h-16 w-auto"
+          className="w-full h-auto object-contain"
         />
       </div>
 
-      {/* Popup Message */}
       {popupMessage && renderPopup()}
 
-      {/* Render animation or form */}
       {showAnimation && !videoEnded ? (
         renderAnimation()
       ) : (
-        <div className="bg-white/50 backdrop-blur-lg rounded-2xl p-6 sm:p-10 shadow-2xl max-w-md w-full relative z-10 transition-transform duration-300">
-          <h2 className="text-xl sm:text-2xl md:text-3xl text-green-700 text-center mb-4 ml-[-1rem] font-bold whitespace-nowrap">
-            Plant a Tree & Save the Earth
+        <div className="bg-white/50 backdrop-blur-lg rounded-2xl p-6 sm:p-8 md:p-10 shadow-2xl w-full max-w-md mx-auto relative z-10 mt-20 transition-transform duration-300">
+          <h2 className="text-xl sm:text-2xl md:text-3xl text-green-700 text-center mb-4 font-bold">
+            Plant a Tree &<br className="sm:hidden" /> Save the Earth
           </h2>
 
-          <p className="text-center text-gray-700 mb-6 text-sm sm:text-base">
+          <p className="text-center text-gray-700 mb-6 text-sm sm:text-base px-2">
             Join our growing community of tree-savers and nature lovers!
           </p>
 
