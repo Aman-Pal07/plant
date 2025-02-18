@@ -14,7 +14,7 @@ const generateCertificateHTML = ({
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=297mm, height=210mm" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Token of Gratitude</title>
     <style>
         @page {
@@ -31,6 +31,8 @@ const generateCertificateHTML = ({
         html, body {
             width: 297mm;
             height: 210mm;
+            margin: 0;
+            padding: 0;
             background: white;
             font-family: Arial, sans-serif;
             overflow: hidden;
@@ -51,34 +53,30 @@ const generateCertificateHTML = ({
             height: 100%;
             background: white;
             position: relative;
-            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
+            margin-bottom: 20px;
             height: 40mm;
         }
 
-        .logo-left {
+        .logo {
             width: 35mm;
             height: 35mm;
             object-fit: contain;
-        }
-
-        .logo-right {
-            width: 30mm;
-            height: 30mm;
-            object-fit: contain;
-            margin-left: 10px;
         }
 
         .title {
             text-align: center;
             font-size: 32px;
             font-weight: bold;
-            margin: 10px 0;
+            margin: 15px 0;
             color: #15803d;
         }
 
@@ -88,7 +86,7 @@ const generateCertificateHTML = ({
             text-decoration: underline;
             text-decoration-color: #22c55e;
             text-decoration-thickness: 1px;
-            margin: 10px 0;
+            margin: 20px 0;
             color: #0d7230;
             font-weight: bold;
         }
@@ -96,16 +94,28 @@ const generateCertificateHTML = ({
         .content {
             text-align: justify;
             line-height: 1.5;
+            margin: 10px 0;
             color: #374151;
-            padding: 0 40px;
-            margin-top: 10px;
+            padding: 0 20px;
         }
 
-        .main-text,
-        .appreciation-text {
+        .main-text {
+            margin: 15px 0;
             font-size: 18px;
             text-align: center;
-            margin: 10px 0;
+        }
+
+        .date-location {
+            margin: 15px 0;
+            font-size: 18px;
+            text-align: center;
+        }
+
+        .appreciation-text {
+            margin: 15px 0;
+            font-size: 18px;
+            text-align: center;
+            padding: 0 40px;
         }
 
         .divider {
@@ -113,50 +123,68 @@ const generateCertificateHTML = ({
             width: 90%;
             margin: 15px auto;
         }
+
+        .button-container {
+            text-align: center;
+            margin: 15px 0 20px 0;
+        }
+
+        .location-button {
+            background-color: #15803d;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 4px;
+            border: none;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        strong {
+            color: #15803d;
+        }
     </style>
 </head>
 <body>
     <div class="certificate-wrapper">
         <div class="certificate">
             <div class="header">
-                <!-- Top Left Image -->
                 <img
                     src="https://www.oil-india.com/files/inline-images/OILLOGOWITHOUTBACKGROUND.png"
                     alt="Oil India Logo"
-                    class="logo-left"
+                    class="logo"
                 />
-
-                <!-- Top Right Images -->
-                <div>
-                    <img
-                        src="https://www.oil-india.com/files/inline-images/Santulan%20Logo%203%20copy.png"
-                        alt="Santulan Logo"
-                        class="logo-right"
-                    />
-                    <img
-                        src="https://www.oil-india.com/files/inline-images/OILLOGOWITHOUTBACKGROUND.png"
-                        alt="Oil India Logo"
-                        class="logo-right"
-                    />
-                </div>
+                <img
+                    src="https://www.oil-india.com/files/inline-images/Santulan%20Logo%203%20copy.png"
+                    alt="Santulan Logo"
+                    class="logo"
+                />
             </div>
 
-            <!-- Title -->
             <div class="title">Token of Gratitude</div>
 
-            <!-- Name -->
             <div class="name">${name}</div>
 
-            <!-- Content -->
             <div class="content">
                 <div class="main-text">
-                    For your valuable participation in the<br>
-                    <strong>Townhall Meeting on OIL's Environmental Strategy held on 19<sup>th</sup> Feb, 2025 at Duliajan Club, Assam</strong><br>
+                    For your valuable participation in the
+                </div>
+
+                <div class="date-location">
+                    <strong>Townhall Meeting on OIL's Environmental Strategy held on 19<sup>th</sup> Feb, 2025 at Duliajan Club, Assam</strong>
                     and your commitment to building a sustainable future.
                 </div>
 
                 <div class="appreciation-text">
                     As a token of our appreciation for your involvement in this important conversation, we are pleased to present you with an <strong>e-plant gift</strong>, symbolizing our collective dedication to environmental stewardship and the fight against climate change.
+                </div>
+            </div>
+
+            <div>
+                <div class="divider"></div>
+                <div class="button-container">
+                    <a href="https://maps.app.goo.gl/xTyGAKBoTb2CXxtc7" class="location-button">View Plant Location</a>
                 </div>
             </div>
         </div>
