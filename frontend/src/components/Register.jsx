@@ -212,7 +212,7 @@ const Register = () => {
           renderAnimation()
         ) : (
           <div className="bg-white/50 backdrop-blur-xl rounded-xl lg:h-[32rem] sm:rounded-2xl p-4 sm:p-6 md:p-8 shadow-2xl w-full max-w-[95vw] sm:max-w-xl mx-auto">
-            <h2 className="text-lg sm:text-2xl md:text-3xl text-green-700 text-center mb-2 sm:mb-4 font-bold lg:ml-[-1rem] whitespace-nowrap">
+            <h2 className="text-lg sm:text-2xl md:text-3xl text-green-700 text-center mb-2 sm:mb-4 font-bold lg:ml-[-1rem] whitespace-normal lg:whitespace-nowrap">
               Plant a Tree & Save the Earth
             </h2>
 

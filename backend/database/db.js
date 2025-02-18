@@ -30,7 +30,6 @@ const connectToDB = async () => {
     try {
       // Check existing indexes
       const indexes = await User.collection.indexes();
-      console.log("📊 Current indexes:", indexes);
 
       // Drop unique index on username if it exists
       if (indexes.some((index) => index.name === "username_1")) {
