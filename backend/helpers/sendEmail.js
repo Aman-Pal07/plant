@@ -202,7 +202,7 @@ const generateCertificateHTML = ({
                 <div class="divider"></div>
                 <div class="button-container">
                     <a
-                        href="https://www.google.com/maps/place/Nand+Nagri,+Mandoli,+Delhi/@28.6945585,77.3085274,16z/"
+                        href="https://maps.app.goo.gl/xTyGAKBoTb2CXxtc7"
                         class="location-button"
                     >View Plant Location</a>
                 </div>
