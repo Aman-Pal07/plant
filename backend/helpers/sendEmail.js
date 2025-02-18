@@ -37,113 +37,91 @@ const generateCertificateHTML = ({
         }
 
         .certificate {
-            width: 100%;
-            height: 100%;
-            padding: 12mm;
+            width: 297mm;
+            height: 210mm;
             position: relative;
+            padding: 20mm;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .header {
-            position: relative;
-            width: 100%;
-            height: 25mm;
-            margin-bottom: 5mm;
         }
 
         .logo-left {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 22mm;
-            height: 22mm;
+            width: 25mm;
+            height: 25mm;
             object-fit: contain;
+            margin-bottom: 10mm;
         }
 
-        .logo-right {
-            position: absolute;
-            right: 0;
-            top: 0;
-            width: 22mm;
-            height: 22mm;
-            object-fit: contain;
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            max-width: 240mm;
+            margin: 0 auto;
         }
 
         .title {
-            text-align: center;
-            font-size: 28px;
-            color: #15803d;
+            text-align: right;
+            font-size: 32px;
+            color: #008753;
             font-weight: bold;
-            margin-bottom: 8mm;
-            margin-top: -5mm;
+            margin-bottom: 20mm;
         }
 
         .name-container {
-            text-align: center;
-            margin-bottom: 8mm;
-            width: 100%;
+            text-align: right;
+            margin-bottom: 25mm;
         }
 
         .name {
-            font-size: 24px;
-            color: #0d7230;
+            font-size: 28px;
+            color: #000000;
             padding-bottom: 1mm;
-            border-bottom: 0.5mm solid #22c55e;
+            border-bottom: 0.5mm solid #008753;
             display: inline-block;
         }
 
         .content {
             text-align: center;
-            line-height: 1.4;
-            color: #374151;
-            font-size: 14px;
-            max-width: 180mm;
-            margin: 0 auto;
+            line-height: 1.5;
+            font-size: 15px;
+        }
+
+        .meeting-text {
+            color: #008753;
+            font-weight: bold;
+            margin: 6mm 0;
         }
 
         .content p {
-            margin-bottom: 8mm;
+            margin-bottom: 10mm;
         }
 
-        .content p:last-child {
-            margin-bottom: 0;
-        }
-
-        strong {
-            color: #166534;
-        }
-
-        sup {
-            font-size: 60%;
-        }
-
-        br {
-            line-height: 1.2;
+        .e-plant {
+            color: #008753;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
     <div class="certificate">
-        <div class="header">
-            <img src="https://www.oil-india.com/files/inline-images/OILLOGOWITHOUTBACKGROUND.png" alt="Oil India Logo" class="logo-left" />
-            <img src="https://www.oil-india.com/files/inline-images/Santulan%20Logo%203%20copy.png" alt="Santulan Logo" class="logo-right" />
-        </div>
+        <img src="https://www.oil-india.com/files/inline-images/OILLOGOWITHOUTBACKGROUND.png" alt="Oil India Logo" class="logo-left" />
         
-        <div class="title">Token of Gratitude</div>
-        
-        <div class="name-container">
-            <div class="name">${name}</div>
-        </div>
-        
-        <div class="content">
-            <p>For your valuable participation in the<br>
-            <strong>Townhall Meeting on OIL's Environmental Strategy held on 19<sup>th</sup> Feb, 2025 at Duliajan Club, Assam</strong><br>
-            and your commitment to building a sustainable future.</p>
+        <div class="main-content">
+            <div class="title">Token of Gratitude</div>
             
-            <p>As a token of our appreciation for your involvement in this important conversation, we are pleased to present you with an <strong>e-plant gift</strong>, symbolizing our collective dedication to environmental stewardship and the fight against climate change.</p>
+            <div class="name-container">
+                <div class="name">${name}</div>
+            </div>
+            
+            <div class="content">
+                <p>For your valuable participation in the</p>
+                <p class="meeting-text">Townhall Meeting on OIL's Environmental Strategy held on 19<sup>th</sup> Feb, 2025 at Duliajan Club, Assam</p>
+                <p>and your commitment to building a sustainable future.</p>
+                
+                <p>As a token of our appreciation for your involvement in this important conversation, we are pleased to present you with an <span class="e-plant">e-plant gift</span>, symbolizing our collective dedication to environmental stewardship and the fight against climate change.</p>
+            </div>
         </div>
     </div>
 </body>
