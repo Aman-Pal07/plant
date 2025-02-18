@@ -31,7 +31,7 @@ const Register = () => {
 
     try {
       const response = await fetch(
-        "https://plant-ebon.vercel.app/api/auth/register",
+        "https://plant-b9xj.onrender.com/api/auth/register",
         {
           method: "POST",
           headers: {
