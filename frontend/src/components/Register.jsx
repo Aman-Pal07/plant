@@ -170,12 +170,15 @@ const Register = () => {
     <div className="min-h-screen flex flex-col justify-center items-center bg-cover bg-center relative bg-[url('/Forest-Habitat.jpg')] px-2 sm:px-4 py-4 sm:py-6">
       <div className="absolute inset-0 bg-black opacity-40 z-0"></div>
 
-      <div className="absolute top-2 sm:top-4 left-1/2 transform -translate-x-1/2 z-10 w-full max-w-[120px] sm:max-w-[200px] px-2 sm:px-4">
-        <img
-          src="https://www.oil-india.com/files/inline-images/OILLOGOWITHBACKGROUND.png"
-          alt="Logo"
-          className="w-full h-auto object-contain"
-        />
+      {/* Updated logo container with improved responsive styling */}
+      <div className="fixed top-0 left-0 w-full flex justify-center items-center p-2 sm:p-4 z-20 ">
+        <div className="w-20 sm:w-32 md:w-40">
+          <img
+            src="https://www.oil-india.com/files/inline-images/OILLOGOWITHBACKGROUND.png"
+            alt="Logo"
+            className="w-full h-auto object-contain"
+          />
+        </div>
       </div>
 
       {popupMessage && renderPopup()}
@@ -183,7 +186,7 @@ const Register = () => {
       {showAnimation && !videoEnded ? (
         renderAnimation()
       ) : (
-        <div className="bg-white/50 backdrop-blur-lg rounded-xl sm:rounded-2xl p-3 sm:p-6 md:p-8 shadow-2xl w-full max-w-[90vw] sm:max-w-md mx-auto relative z-10 mt-24 sm:mt-32 md:mt-40 transition-transform duration-300">
+        <div className="bg-white/50 backdrop-blur-lg rounded-xl sm:rounded-2xl p-3 sm:p-6 md:p-8 shadow-2xl w-full max-w-[90vw] sm:max-w-md mx-auto relative z-10 mt-16 sm:mt-20 md:mt-24 transition-transform duration-300">
           <h2 className="text-lg sm:text-2xl md:text-3xl text-green-700 text-center mb-2 sm:mb-4 font-bold">
             Plant a Tree &<br className="sm:hidden" /> Save the Earth
           </h2>
