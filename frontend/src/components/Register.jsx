@@ -201,20 +201,21 @@ const Register = () => {
   );
 
   return (
-    <div className="min-h-screen w-full h-[100vh] bg-cover bg-center overflow-x-hidden mt-[-15px]">
+    <div className="min-h-screen w-full h-[100vh] bg-cover bg-center overflow-x-hidden mt-[-25px]">
       {/* Optional overlay for darkening the background */}
       {/* <div className="absolute inset-0 bg-black opacity-40" /> */}
 
-      <div className="relative w-full min-h-screen flex flex-col items-center justify-start py-8 px-4">
+      <div className="relative w-full min-h-screen flex flex-col items-center justify-start py-8 px-4 sm:px-6 md:px-8">
         {popupMessage && renderPopup()}
 
         {showAnimation && !videoEnded ? (
           renderAnimation()
         ) : (
-          <div className="bg-white/50 backdrop-blur-xl rounded-xl h-[510px] sm:rounded-2xl p-4 sm:p-6 md:p-8 shadow-2xl w-full max-w-[95vw] sm:max-w-xl mx-auto">
-            <h2 className="text-lg sm:text-2xl md:text-3xl text-green-700 text-center mb-2 sm:mb-4 font-bold">
-              Plant a Tree &<br className="sm:hidden" /> Save the Earth
+          <div className="bg-white/50 backdrop-blur-xl rounded-xl lg:h-[32rem] sm:rounded-2xl p-4 sm:p-6 md:p-8 shadow-2xl w-full max-w-[95vw] sm:max-w-xl mx-auto">
+            <h2 className="text-lg sm:text-2xl md:text-3xl text-green-700 text-center mb-2 sm:mb-4 font-bold lg:ml-[-1rem] whitespace-nowrap">
+              Plant a Tree & Save the Earth
             </h2>
+
             <p className="text-center text-gray-700 mb-4 sm:mb-6 text-xs sm:text-sm md:text-base px-2">
               Join our growing community of tree-savers and nature lovers!
             </p>

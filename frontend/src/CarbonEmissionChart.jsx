@@ -59,7 +59,7 @@ const CarbonEmissionChart = () => {
   };
 
   return (
-    <div className="bg-gradient-to-r bg-white/50 p-4 rounded-xl shadow-xl w-full max-w-4xl mx-auto backdrop-blur-lg">
+    <div className="bg-gradient-to-r  mt-[-58px] bg-white/50 p-4 rounded-xl shadow-xl w-full max-w-4xl mx-auto backdrop-blur-lg">
       <h2 className="text-2xl font-semibold text-white text-center mb-4">
         Carbon Emissions Visualization
       </h2>

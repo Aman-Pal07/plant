@@ -13,15 +13,15 @@ const App = () => {
       {/* Logo at the top center */}
       <Logo />
 
-      {/* Flex container for Register and CarbonEmissionChart side by side */}
-      <div className="flex w-full -xl mt-8 mr-30">
-        {/* Register on the left */}
-        <div className="w-1/3 ml-[10rem] ">
+      {/* Flex container for Register and CarbonEmissionChart */}
+      <div className="flex w-full mt-8 flex-col md:flex-row lg:mr-[10rem]">
+        {/* Register: Add margin-left on mobile only */}
+        <div className="w-full sm:ml-12 md:w-1/3 md:ml-[10rem]  ">
           <Register />
         </div>
 
-        {/* CarbonEmissionChart on the right */}
-        <div className="w-2/3 p-4 ">
+        {/* CarbonEmissionChart: Add margin-top on mobile only */}
+        <div className="w-full md:w-2/3 p-4 mt-[-17rem] sm:mt-12 sm:ml-0">
           <CarbonEmissionChart />
         </div>
       </div>
