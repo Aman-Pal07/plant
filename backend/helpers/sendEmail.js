@@ -157,8 +157,8 @@ const generatePDF = async (html, outputPath) => {
       format: "A4",
       orientation: "landscape",
       border: "0",
-      height: "210mm", // Exact A4 landscape height
-      width: "297mm", // Exact A4 landscape width
+      width: "230mm",
+      height: "230mm",
       type: "pdf",
       renderDelay: 1000,
       zoomFactor: 1, // Prevent any automatic scaling
