@@ -75,7 +75,7 @@ const Register = () => {
   };
 
   const renderPopup = () => (
-    <div className="fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 bg-white text-black border w-full max-w-[90vw] sm:max-w-sm md:max-w-md transition-all duration-300 ease-in-out transform hover:scale-105">
+    <div className="fixed top-4 right-4 p-4 rounded-lg shadow-lg bg-white text-black border w-full max-w-[90vw] sm:max-w-sm md:max-w-md transition-all duration-300 ease-in-out transform hover:scale-105">
       <div
         className={`${
           popupType === "success"
@@ -150,7 +150,7 @@ const Register = () => {
   );
 
   const renderAnimation = () => (
-    <div className="absolute mt-6 sm:mt-10 top-0 left-0 w-full h-full z-0 flex justify-center items-center">
+    <div className="mt-6 sm:mt-10 w-full flex justify-center items-center">
       <video
         ref={videoRef}
         src="/plant_gif.mp4"
@@ -167,36 +167,36 @@ const Register = () => {
   );
 
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center bg-cover bg-center relative bg-[url('/Forest-Habitat.jpg')] px-2 sm:px-4 py-4 sm:py-6">
-      <div className="absolute inset-0 bg-black opacity-40 z-0"></div>
+    <div className="min-h-screen flex flex-col items-center bg-cover bg-center bg-[url('/Forest-Habitat.jpg')] px-2 sm:px-4 py-4 sm:py-6">
+      <div className="absolute inset-0 bg-black opacity-40"></div>
 
-      {/* Updated logo container with improved responsive styling */}
-      <div className="fixed top-0 left-0 w-full flex justify-center items-center p-2 sm:p-4  ">
-        <div className="w-20 sm:w-32 md:w-40">
+      <div className="relative w-full flex flex-col items-center ">
+        {/* Logo */}
+        <div className="w-20 sm:w-32 md:w-40 mb-8 sm:mb-12 md:mb-16">
           <img
             src="https://www.oil-india.com/files/inline-images/OILLOGOWITHBACKGROUND.png"
             alt="Logo"
             className="w-full h-auto object-contain"
           />
         </div>
+
+        {popupMessage && renderPopup()}
+
+        {showAnimation && !videoEnded ? (
+          renderAnimation()
+        ) : (
+          <div className="bg-white/50 backdrop-blur-lg rounded-xl sm:rounded-2xl p-3 sm:p-6 md:p-8 shadow-2xl w-full max-w-[90vw] sm:max-w-md mx-auto">
+            <h2 className="text-lg sm:text-2xl md:text-3xl text-green-700 text-center mb-2 sm:mb-4 font-bold">
+              Plant a Tree &<br className="sm:hidden" /> Save the Earth
+            </h2>
+            <p className="text-center text-gray-700 mb-4 sm:mb-6 text-xs sm:text-sm md:text-base px-2">
+              Join our growing community of tree-savers and nature lovers!
+            </p>
+
+            {renderForm()}
+          </div>
+        )}
       </div>
-
-      {popupMessage && renderPopup()}
-
-      {showAnimation && !videoEnded ? (
-        renderAnimation()
-      ) : (
-        <div className="bg-white/50 backdrop-blur-lg rounded-xl sm:rounded-2xl p-3 sm:p-6 md:p-8 shadow-2xl w-full max-w-[90vw] sm:max-w-md mx-auto relative  mt-16 sm:mt-20 md:mt-24 transition-transform duration-300">
-          <h2 className="text-lg sm:text-2xl md:text-3xl text-green-700 text-center mb-2 sm:mb-4 font-bold">
-            Plant a Tree &<br className="sm:hidden" /> Save the Earth
-          </h2>
-          <p className="text-center text-gray-700 mb-4 sm:mb-6 text-xs sm:text-sm md:text-base px-2">
-            Join our growing community of tree-savers and nature lovers!
-          </p>
-
-          {renderForm()}
-        </div>
-      )}
     </div>
   );
 };
