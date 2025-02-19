@@ -40,7 +40,6 @@ const generateCertificateHTML = ({
             width: 100%;
             height: 100%;
             padding: 12mm;
-            position: relative;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -48,28 +47,27 @@ const generateCertificateHTML = ({
         }
 
         .header {
-            position: relative;
             width: 100%;
             height: 25mm;
             margin-bottom: 5mm;
+            position: relative;
+        }
+
+        .logo-left,
+        .logo-right {
+            position: absolute;
+            top: 0;
+            width: 22mm;
+            height: 22mm;
+            object-fit: contain;
         }
 
         .logo-left {
-            position: absolute;
             left: 0;
-            top: 0;
-            width: 22mm;
-            height: 22mm;
-            object-fit: contain;
         }
 
         .logo-right {
-            position: absolute;
             right: 0;
-            top: 0;
-            width: 22mm;
-            height: 22mm;
-            object-fit: contain;
         }
 
         .title {
@@ -78,13 +76,11 @@ const generateCertificateHTML = ({
             color: #15803d;
             font-weight: bold;
             margin-bottom: 8mm;
-            margin-top: -5mm;
         }
 
         .name-container {
             text-align: center;
             margin-bottom: 8mm;
-            width: 100%;
         }
 
         .name {
@@ -104,27 +100,7 @@ const generateCertificateHTML = ({
             margin: 0 auto;
         }
 
-        .content p {
-            margin-bottom: 8mm;
-        }
-
-        .content p:last-child {
-            margin-bottom: 0;
-        }
-
-        strong {
-            color: #166534;
-        }
-
-        sup {
-            font-size: 60%;
-        }
-
-        br {
-            line-height: 1.2;
-        }
-
-.divider {
+        .divider {
             width: 80%;
             height: 0.5mm;
             background: linear-gradient(to right, transparent, #22c55e, transparent);
@@ -138,9 +114,6 @@ const generateCertificateHTML = ({
             border: none;
             border-radius: 1mm;
             font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            margin-top: 2mm;
             text-decoration: none;
             display: inline-block;
         }
@@ -148,8 +121,6 @@ const generateCertificateHTML = ({
         .view-button:hover {
             background-color: #166534;
         }
-
-
     </style>
 </head>
 <body>
@@ -189,42 +160,28 @@ const generatePDF = async (html, outputPath) => {
       width: "350mm",
       height: "230mm",
       type: "pdf",
-      renderDelay: 5000, // Increased delay
-      timeout: 60000, // Added timeout
-      zoomFactor: 1,
+      renderDelay: 2000, // Reduced delay for faster generation
+      timeout: 30000, // Reduced timeout for optimization
       printBackground: true,
       preferCSSPageSize: true,
-      pageRanges: "1",
     };
 
     htmlPdf.create(html, options).toFile(outputPath, (err, res) => {
-      if (err) {
-        console.error("PDF generation error:", err);
-        reject(err);
-      } else {
-        resolve(res);
-      }
+      if (err) reject(err);
+      else resolve(res);
     });
   });
 };
 
 const sendEmail = async (to, subject, certificateData) => {
   try {
-    // Create temp directory if it doesn't exist
     const tempDir = path.join(__dirname, "../temp");
-    try {
-      await fs.mkdir(tempDir, { recursive: true });
-    } catch (err) {
-      console.log("Temp directory already exists or error creating:", err);
-    }
+    await fs.mkdir(tempDir, { recursive: true });
 
     const html = generateCertificateHTML(certificateData);
     const pdfPath = path.join(tempDir, `${certificateData.certificateId}.pdf`);
 
-    // Add more detailed logging
-    console.log("Generating PDF at path:", pdfPath);
     await generatePDF(html, pdfPath);
-    console.log("PDF generated successfully");
 
     const transporter = nodemailer.createTransport({
       service: "gmail",
@@ -232,16 +189,12 @@ const sendEmail = async (to, subject, certificateData) => {
         user: process.env.SMPT_MAIL,
         pass: process.env.SMPT_PASSWORD,
       },
-      tls: {
-        rejectUnauthorized: false,
-      },
-      connectionTimeout: 60000, // Increase SMTP connection timeout to 60 sec
-      socketTimeout: 60000, // Increase socket timeout to 60 sec
+      tls: { rejectUnauthorized: false },
+      connectionTimeout: 30000,
+      socketTimeout: 30000,
     });
 
-    // Verify SMTP connection
     await transporter.verify();
-    console.log("SMTP connection verified");
 
     const mailOptions = {
       from: process.env.SMPT_MAIL,
@@ -257,34 +210,20 @@ const sendEmail = async (to, subject, certificateData) => {
       ],
     };
 
-    // Add retry logic
     let retries = 3;
     while (retries > 0) {
       try {
         await transporter.sendMail(mailOptions);
-        console.log("✅ Email sent successfully with PDF certificate!");
         break;
       } catch (error) {
         retries--;
-        console.error(
-          `Email send attempt failed. ${retries} retries left:`,
-          error
-        );
         if (retries === 0) throw error;
-        await new Promise((resolve) => setTimeout(resolve, 5000)); // Wait 3 seconds before retry
+        await new Promise((resolve) => setTimeout(resolve, 3000));
       }
     }
 
-    // Clean up file
-    try {
-      await fs.unlink(pdfPath);
-      console.log("Temporary PDF file cleaned up");
-    } catch (cleanupError) {
-      console.error("Error cleaning up PDF file:", cleanupError);
-    }
+    await fs.unlink(pdfPath);
   } catch (error) {
-    console.error("❌ Detailed email error:", error);
-    console.error("Stack trace:", error.stack);
     throw new Error(`Email could not be sent: ${error.message}`);
   }
 };
