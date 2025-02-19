@@ -155,8 +155,8 @@ const generateCertificateHTML = ({
 <body>
     <div class="certificate">
         <div class="header">
-            <img src="https://www.oil-india.com/files/inline-images/OILLOGOWITHOUTBACKGROUND.png" alt="Oil India Logo" class="logo-left" />
-            <img src="https://www.oil-india.com/files/inline-images/Santulan%20Logo%203%20copy.png" alt="Santulan Logo" class="logo-right" />
+            <img src="https://res.cloudinary.com/do4acizfd/image/upload/v1739952327/OILLOGOWITHOUTBACKGROUND_s3rfxc.jpg" alt="Oil India Logo" class="logo-left" />
+            <img src="https://res.cloudinary.com/do4acizfd/image/upload/v1739952327/Santulan_Logo_3_copy_lxwscp.jpg" alt="Santulan Logo" class="logo-right" />
         </div>
         
         <div class="title">Token of Gratitude</div>
@@ -232,11 +232,11 @@ const sendEmail = async (to, subject, certificateData) => {
         user: process.env.SMPT_MAIL,
         pass: process.env.SMPT_PASSWORD,
       },
-      // Add timeout settings
       tls: {
         rejectUnauthorized: false,
       },
-      timeout: 30000, // 30 seconds
+      connectionTimeout: 60000, // Increase SMTP connection timeout to 60 sec
+      socketTimeout: 60000, // Increase socket timeout to 60 sec
     });
 
     // Verify SMTP connection
@@ -271,7 +271,7 @@ const sendEmail = async (to, subject, certificateData) => {
           error
         );
         if (retries === 0) throw error;
-        await new Promise((resolve) => setTimeout(resolve, 3000)); // Wait 3 seconds before retry
+        await new Promise((resolve) => setTimeout(resolve, 5000)); // Wait 3 seconds before retry
       }
     }
 
