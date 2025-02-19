@@ -180,23 +180,25 @@ const Register = () => {
       </button>
     </form>
   );
+
   const renderAnimation = () => (
-    <div className="w-full flex justify-center items-start  md:mt-3">
-      <video
-        ref={videoRef}
-        src="/plant_gif.mp4"
-        autoPlay
-        muted
-        className="w-[800px] h-[800px] sm:w-80 sm:h-80 md:w-[600px] md:h-[600px]"
-        onLoadedMetadata={() => {
-          videoRef.current.playbackRate = 3;
-        }}
-        onEnded={() => {
-          setVideoEnded(true);
-          setShowAnimation(false);
-        }}
-        style={{ transform: "scale(1.2)" }}
-      />
+    <div className="w-full flex justify-center items-start p-1">
+      <div className="relative aspect-square w-[280px] sm:w-[320px] md:w-[400px] lg:w-[500px]">
+        <video
+          ref={videoRef}
+          src="../../public/plant_gif.mp4"
+          autoPlay
+          muted
+          className="w-full h-full object-cover"
+          onLoadedMetadata={() => {
+            videoRef.current.playbackRate = 3;
+          }}
+          onEnded={() => {
+            setVideoEnded(true);
+            setShowAnimation(false);
+          }}
+        />
+      </div>
     </div>
   );
 

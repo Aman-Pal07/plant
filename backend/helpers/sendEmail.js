@@ -159,28 +159,42 @@ const generatePDF = async (html, outputPath) => {
       width: "350mm",
       height: "230mm",
       type: "pdf",
-      renderDelay: 1000,
-      zoomFactor: 1, // Prevent any automatic scaling
+      renderDelay: 2000, // Increased delay
+      timeout: 30000, // Added timeout
+      zoomFactor: 1,
       printBackground: true,
       preferCSSPageSize: true,
-      pageRanges: "1", // Only generate first page
+      pageRanges: "1",
     };
 
     htmlPdf.create(html, options).toFile(outputPath, (err, res) => {
-      if (err) reject(err);
-      else resolve(res);
+      if (err) {
+        console.error("PDF generation error:", err);
+        reject(err);
+      } else {
+        resolve(res);
+      }
     });
   });
 };
 
 const sendEmail = async (to, subject, certificateData) => {
   try {
+    // Create temp directory if it doesn't exist
+    const tempDir = path.join(__dirname, "../temp");
+    try {
+      await fs.mkdir(tempDir, { recursive: true });
+    } catch (err) {
+      console.log("Temp directory already exists or error creating:", err);
+    }
+
     const html = generateCertificateHTML(certificateData);
-    const pdfPath = path.join(
-      __dirname,
-      `../temp/${certificateData.certificateId}.pdf`
-    );
+    const pdfPath = path.join(tempDir, `${certificateData.certificateId}.pdf`);
+
+    // Add more detailed logging
+    console.log("Generating PDF at path:", pdfPath);
     await generatePDF(html, pdfPath);
+    console.log("PDF generated successfully");
 
     const transporter = nodemailer.createTransport({
       service: "gmail",
@@ -188,7 +202,16 @@ const sendEmail = async (to, subject, certificateData) => {
         user: process.env.SMPT_MAIL,
         pass: process.env.SMPT_PASSWORD,
       },
+      // Add timeout settings
+      tls: {
+        rejectUnauthorized: false,
+      },
+      timeout: 30000, // 30 seconds
     });
+
+    // Verify SMTP connection
+    await transporter.verify();
+    console.log("SMTP connection verified");
 
     const mailOptions = {
       from: process.env.SMPT_MAIL,
@@ -204,13 +227,35 @@ const sendEmail = async (to, subject, certificateData) => {
       ],
     };
 
-    await transporter.sendMail(mailOptions);
-    console.log("✅ Email sent successfully with PDF certificate!");
+    // Add retry logic
+    let retries = 3;
+    while (retries > 0) {
+      try {
+        await transporter.sendMail(mailOptions);
+        console.log("✅ Email sent successfully with PDF certificate!");
+        break;
+      } catch (error) {
+        retries--;
+        console.error(
+          `Email send attempt failed. ${retries} retries left:`,
+          error
+        );
+        if (retries === 0) throw error;
+        await new Promise((resolve) => setTimeout(resolve, 3000)); // Wait 3 seconds before retry
+      }
+    }
 
-    await fs.unlink(pdfPath);
+    // Clean up file
+    try {
+      await fs.unlink(pdfPath);
+      console.log("Temporary PDF file cleaned up");
+    } catch (cleanupError) {
+      console.error("Error cleaning up PDF file:", cleanupError);
+    }
   } catch (error) {
-    console.error("❌ Email failed to send:", error);
-    throw new Error("Email could not be sent!");
+    console.error("❌ Detailed email error:", error);
+    console.error("Stack trace:", error.stack);
+    throw new Error(`Email could not be sent: ${error.message}`);
   }
 };
 
