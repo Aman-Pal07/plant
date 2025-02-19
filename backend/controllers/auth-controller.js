@@ -56,7 +56,6 @@ const registerUser = async (req, res) => {
       username,
       email,
       phone: validatedPhone,
-      address: "Nand nagri",
     };
 
     console.log("Creating new user with data:", userData); // Debug log
