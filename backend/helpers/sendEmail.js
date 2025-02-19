@@ -123,6 +123,33 @@ const generateCertificateHTML = ({
         br {
             line-height: 1.2;
         }
+
+.divider {
+            width: 80%;
+            height: 0.5mm;
+            background: linear-gradient(to right, transparent, #22c55e, transparent);
+            margin: 10mm auto 6mm;
+        }
+
+        .view-button {
+            background-color: #15803d;
+            color: white;
+            padding: 2mm 6mm;
+            border: none;
+            border-radius: 1mm;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 2mm;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .view-button:hover {
+            background-color: #166534;
+        }
+
+
     </style>
 </head>
 <body>
@@ -144,6 +171,9 @@ const generateCertificateHTML = ({
             
             <p>As a token of our appreciation for your involvement in this important conversation, we are pleased to present you with an <strong>e-plant gift</strong>, symbolizing our collective dedication to environmental stewardship and the fight against climate change.</p>
         </div>
+
+        <div class="divider"></div>
+        <a href="#" class="view-button">View Plant Location</a>
     </div>
 </body>
 </html>
