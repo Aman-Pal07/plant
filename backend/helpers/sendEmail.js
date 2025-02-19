@@ -137,10 +137,19 @@ const generateCertificateHTML = ({
         </div>
         
         <div class="content">
-            <p>For your valuable participation in the
-           Townhall Meeting on OIL's Environmental Strategy held on 19<sup>th</sup> Feb, 2025 at Duliajan Club, Assam and your commitment to building a sustainable future.</p>
-            
-            <p>As a token of our appreciation for your involvement in this important conversation, we are pleased to present you with an <strong>e-plant gift</strong>, symbolizing our collective dedication to environmental stewardship and the fight against climate change.</p>
+             <p>
+          For your valuable participation in the
+          <span><b>Townhall Meeting on OIL's Environmental Strategy</b></span>
+          held on <b>19<sup>th</sup> Feb, 2025 </b> at  Duliajan Club, Assam and
+          your commitment to building a sustainable future.
+        </p>
+
+        <p>
+          As a token of our appreciation for your involvement in this important
+          conversation, we are pleased to present you with an
+          <strong>e-plant gift</strong>, symbolizing our collective dedication
+          to environmental stewardship and the fight against climate change.
+        </p>
         </div>
 
         <div class="divider"></div>
