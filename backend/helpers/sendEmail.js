@@ -173,7 +173,7 @@ const generateCertificateHTML = ({
         </div>
 
         <div class="divider"></div>
-        <a href="#" class="view-button">View Plant Location</a>
+        <a href="https://maps.app.goo.gl/fJrCDuSKG6qbKA3BA" class="view-button">View Plant Location</a>
     </div>
 </body>
 </html>
