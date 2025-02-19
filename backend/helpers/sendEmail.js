@@ -180,112 +180,191 @@ const generateCertificateHTML = ({
   `;
 };
 
+// New function to generate PDF using puppeteer with improved error handling
 const generatePDF = async (html, outputPath) => {
-  return new Promise((resolve, reject) => {
-    const options = {
-      format: "A4",
-      orientation: "landscape",
-      border: "0",
-      width: "350mm",
-      height: "230mm",
-      type: "pdf",
-      renderDelay: 2000, // Increased delay
-      timeout: 30000, // Added timeout
-      zoomFactor: 1,
-      printBackground: true,
-      preferCSSPageSize: true,
-      pageRanges: "1",
-    };
+  let browser = null;
+  let page = null;
 
-    htmlPdf.create(html, options).toFile(outputPath, (err, res) => {
-      if (err) {
-        console.error("PDF generation error:", err);
-        reject(err);
-      } else {
-        resolve(res);
-      }
+  try {
+    // Launch browser with increased timeout
+    browser = await puppeteer.launch({
+      args: [
+        "--no-sandbox",
+        "--disable-setuid-sandbox",
+        "--disable-dev-shm-usage",
+        "--disable-gpu",
+        "--single-process",
+      ],
+      headless: "new",
+      timeout: 60000, // Increase timeout to 60 seconds
     });
-  });
+
+    // Create new page with timeout
+    page = await browser.newPage();
+
+    // Set viewport
+    await page.setViewport({
+      width: 1687,
+      height: 1192,
+    });
+
+    // Set content with extended timeout
+    await page.setContent(html, {
+      waitUntil: ["load", "networkidle0"],
+      timeout: 30000,
+    });
+
+    // Add a small delay to ensure content is fully rendered
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    // Generate PDF with specific settings and timeout
+    const pdfBuffer = await page.pdf({
+      path: outputPath,
+      format: "A4",
+      landscape: true,
+      printBackground: true,
+      margin: {
+        top: "0",
+        right: "0",
+        bottom: "0",
+        left: "0",
+      },
+      timeout: 30000,
+    });
+
+    // Verify PDF was generated
+    if (!pdfBuffer) {
+      throw new Error("PDF generation failed - no buffer returned");
+    }
+
+    // Verify file exists and has size
+    const stats = await fs.stat(outputPath);
+    if (stats.size === 0) {
+      throw new Error("Generated PDF file is empty");
+    }
+
+    return outputPath;
+  } catch (error) {
+    // Enhanced error logging
+    console.error("PDF Generation Error Details:", {
+      error: error.message,
+      stack: error.stack,
+      cause: error.cause,
+      browserState: browser ? "launched" : "not launched",
+      pageState: page ? "created" : "not created",
+    });
+
+    throw new Error(`PDF generation failed: ${error.message}`);
+  } finally {
+    // Careful cleanup
+    try {
+      if (page) {
+        await page
+          .close()
+          .catch((e) => console.error("Error closing page:", e));
+      }
+      if (browser) {
+        await browser
+          .close()
+          .catch((e) => console.error("Error closing browser:", e));
+      }
+    } catch (cleanupError) {
+      console.error("Error in cleanup:", cleanupError);
+    }
+  }
 };
 
 const sendEmail = async (to, subject, certificateData) => {
-  try {
-    // Create temp directory if it doesn't exist
-    const tempDir = path.join(__dirname, "../temp");
+  let pdfPath = null;
+  let retries = 3;
+
+  while (retries > 0) {
     try {
-      await fs.mkdir(tempDir, { recursive: true });
-    } catch (err) {
-      console.log("Temp directory already exists or error creating:", err);
-    }
+      // Create temp directory with robust error handling
+      const tempDir = path.join(__dirname, "../temp");
+      await fs.mkdir(tempDir, { recursive: true }).catch((err) => {
+        if (err.code !== "EEXIST") throw err;
+      });
 
-    const html = generateCertificateHTML(certificateData);
-    const pdfPath = path.join(tempDir, `${certificateData.certificateId}.pdf`);
+      // Generate unique filename with timestamp
+      const timestamp = new Date().getTime();
+      pdfPath = path.join(
+        tempDir,
+        `${certificateData.certificateId}_${timestamp}.pdf`
+      );
 
-    // Add more detailed logging
-    console.log("Generating PDF at path:", pdfPath);
-    await generatePDF(html, pdfPath);
-    console.log("PDF generated successfully");
+      const html = generateCertificateHTML(certificateData);
 
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.SMPT_MAIL,
-        pass: process.env.SMPT_PASSWORD,
-      },
-      // Add timeout settings
-      tls: {
-        rejectUnauthorized: false,
-      },
-      timeout: 30000, // 30 seconds
-    });
+      console.log(`Attempt ${4 - retries}: Starting PDF generation...`);
+      await generatePDF(html, pdfPath);
+      console.log("PDF generated successfully at:", pdfPath);
 
-    // Verify SMTP connection
-    await transporter.verify();
-    console.log("SMTP connection verified");
-
-    const mailOptions = {
-      from: process.env.SMPT_MAIL,
-      to,
-      subject,
-      text: `Dear ${certificateData.name},\n\nPlease find attached your Certificate of Completion from OIL CLIMATE ACADEMY.\n\nBest regards,\nOIL CLIMATE ACADEMY Team`,
-      attachments: [
-        {
-          filename: "Certificate.pdf",
-          path: pdfPath,
-          contentType: "application/pdf",
+      // Create transporter
+      const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: process.env.SMPT_MAIL,
+          pass: process.env.SMPT_PASSWORD,
         },
-      ],
-    };
+        tls: {
+          rejectUnauthorized: true,
+          minVersion: "TLSv1.2",
+        },
+        pool: true,
+        maxConnections: 5,
+        maxMessages: 100,
+        rateDelta: 1000,
+        rateLimit: 5,
+      });
 
-    // Add retry logic
-    let retries = 3;
-    while (retries > 0) {
-      try {
-        await transporter.sendMail(mailOptions);
-        console.log("✅ Email sent successfully with PDF certificate!");
-        break;
-      } catch (error) {
-        retries--;
-        console.error(
-          `Email send attempt failed. ${retries} retries left:`,
-          error
-        );
-        if (retries === 0) throw error;
-        await new Promise((resolve) => setTimeout(resolve, 3000)); // Wait 3 seconds before retry
+      const mailOptions = {
+        from: process.env.SMPT_MAIL,
+        to,
+        subject,
+        text: `Dear ${certificateData.name},\n\nPlease find attached your Certificate of Completion from OIL CLIMATE ACADEMY.\n\nBest regards,\nOIL CLIMATE ACADEMY Team`,
+        attachments: [
+          {
+            filename: "Certificate.pdf",
+            path: pdfPath,
+            contentType: "application/pdf",
+          },
+        ],
+      };
+
+      await transporter.sendMail(mailOptions);
+      console.log("✅ Email sent successfully!");
+      break;
+    } catch (error) {
+      console.error(`Attempt ${4 - retries} failed:`, error);
+      retries--;
+
+      if (retries === 0) {
+        throw new Error(`All attempts failed: ${error.message}`);
       }
-    }
 
-    // Clean up file
+      // Clean up failed PDF
+      if (pdfPath) {
+        try {
+          await fs.unlink(pdfPath).catch(console.error);
+        } catch (cleanupError) {
+          console.error("Failed to clean up PDF:", cleanupError);
+        }
+      }
+
+      // Wait before retrying
+      const delay = (4 - retries) * 3000;
+      await new Promise((resolve) => setTimeout(resolve, delay));
+    }
+  }
+
+  // Final cleanup
+  if (pdfPath) {
     try {
       await fs.unlink(pdfPath);
-      console.log("Temporary PDF file cleaned up");
+      console.log("Temporary PDF file cleaned up:", pdfPath);
     } catch (cleanupError) {
-      console.error("Error cleaning up PDF file:", cleanupError);
+      console.error("Warning: Failed to clean up PDF file:", cleanupError);
     }
-  } catch (error) {
-    console.error("❌ Detailed email error:", error);
-    console.error("Stack trace:", error.stack);
-    throw new Error(`Email could not be sent: ${error.message}`);
   }
 };
 
