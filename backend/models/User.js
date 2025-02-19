@@ -26,10 +26,6 @@ const UserSchema = new mongoose.Schema(
         message: "Phone number must be exactly 10 digits.",
       },
     },
-    address: {
-      type: String,
-      default: "Nand nagri",
-    },
   },
   { timestamps: true }
 );
