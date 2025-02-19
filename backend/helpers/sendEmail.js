@@ -151,28 +151,6 @@ const generateCertificateHTML = ({
   `;
 };
 
-const generatePDF = async (html, outputPath) => {
-  return new Promise((resolve, reject) => {
-    const options = {
-      format: "A4",
-      orientation: "landscape",
-      border: "0",
-      width: "350mm",
-      height: "230mm",
-      type: "pdf",
-      renderDelay: 2000, // Reduced delay for faster generation
-      timeout: 30000, // Reduced timeout for optimization
-      printBackground: true,
-      preferCSSPageSize: true,
-    };
-
-    htmlPdf.create(html, options).toFile(outputPath, (err, res) => {
-      if (err) reject(err);
-      else resolve(res);
-    });
-  });
-};
-
 const sendEmail = async (to, subject, certificateData) => {
   try {
     const tempDir = path.join(__dirname, "../temp");
@@ -200,7 +178,7 @@ const sendEmail = async (to, subject, certificateData) => {
       from: process.env.SMPT_MAIL,
       to,
       subject,
-      text: `Dear ${certificateData.name},\n\nPlease find attached your Certificate of Completion from OIL CLIMATE ACADEMY.\n\nBest regards,\nOIL CLIMATE ACADEMY Team`,
+      text: `Dear ${certificateData.name},\n\nThank you for your valuable participation in the Townhall Meeting on OIL’s Environmental Strategy held on 19th February 2025 at Duliajan Club, Assam. Your involvement in this vital discussion plays an essential role in our collective journey toward building a sustainable future.\n\nAs a token of our gratitude for your commitment to environmental stewardship and the fight against climate change, we are pleased to present you with an e-plant gift. This gift symbolizes our shared dedication to creating a greener, more sustainable world.\n\nPlease find attached your Token of Gratitude, recognizing your contribution to the Townhall meeting and the future of OIL’s Environmental Strategy.\n\nBest regards,\nTeam HSE & ESG`,
       attachments: [
         {
           filename: "Certificate.pdf",
@@ -210,18 +188,7 @@ const sendEmail = async (to, subject, certificateData) => {
       ],
     };
 
-    let retries = 3;
-    while (retries > 0) {
-      try {
-        await transporter.sendMail(mailOptions);
-        break;
-      } catch (error) {
-        retries--;
-        if (retries === 0) throw error;
-        await new Promise((resolve) => setTimeout(resolve, 3000));
-      }
-    }
-
+    await transporter.sendMail(mailOptions);
     await fs.unlink(pdfPath);
   } catch (error) {
     throw new Error(`Email could not be sent: ${error.message}`);
