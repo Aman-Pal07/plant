@@ -5,7 +5,7 @@ const registerUser = async (req, res) => {
   try {
     const { username, email, phone } = req.body;
 
-    console.log("Received registration request:", { username, email, phone }); // Debug log
+    console.log("Received registration request:", { username, email, phone });
 
     // Input Validation
     if (!username || !email) {
@@ -24,13 +24,10 @@ const registerUser = async (req, res) => {
       });
     }
 
-    // Phone Validation - handle all possible cases
+    // Phone Validation
     let validatedPhone = "No phone number provided";
-
-    // Only validate phone if it exists and isn't empty
     if (phone) {
       const phoneStr = phone.toString().trim();
-
       if (phoneStr.length > 0) {
         if (!/^\d{10}$/.test(phoneStr)) {
           return res.status(400).json({
@@ -51,14 +48,14 @@ const registerUser = async (req, res) => {
       });
     }
 
-    // Create New User with default address
+    // Create New User (without address)
     const userData = {
       username,
       email,
-      phone: validatedPhone,
+      phone: validatedPhone, // Address is not included
     };
 
-    console.log("Creating new user with data:", userData); // Debug log
+    console.log("Creating new user with data:", userData);
 
     const newUser = new User(userData);
     await newUser.save();
@@ -73,7 +70,7 @@ const registerUser = async (req, res) => {
       registrationDate: new Date().toLocaleDateString(),
     };
 
-    // Dynamically create the subject
+    // Email subject
     const subject = `Certificate of Appreciation – OIL’s Environmental Strategy Townhall`;
 
     try {
@@ -81,7 +78,6 @@ const registerUser = async (req, res) => {
       console.log("✅ Certificate email sent successfully");
     } catch (emailError) {
       console.error("⚠️ Error sending certificate email:", emailError);
-      // Continue with success response even if email fails
     }
 
     res.status(201).json({
@@ -91,10 +87,6 @@ const registerUser = async (req, res) => {
     });
   } catch (error) {
     console.error("❌ Error occurred during registration:", error);
-    console.error("Error details:", {
-      message: error.message,
-      stack: error.stack,
-    });
 
     res.status(500).json({
       success: false,
