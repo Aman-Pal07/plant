@@ -9,7 +9,11 @@ const app = express();
 // Middleware
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://plant-frontend.onrender.com"],
+    origin: [
+      "http://localhost:5173",
+      "https://plant-frontend.onrender.com",
+      "https://plantatrees-org-in.onrender.com",
+    ],
     credentials: true,
   })
 );

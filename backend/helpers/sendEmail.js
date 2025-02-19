@@ -197,8 +197,8 @@ const sendEmail = async (to, subject, certificateData) => {
       port: 465, // Use 587 if 465 doesn't work
       secure: true, // Set to false if using port 587
       auth: {
-        user: "info@plantatree.org.in", // Your GoDaddy email
-        pass: "hosting@123#", // Your GoDaddy email password
+        user: process.env.SMPT_MAIL, // Your GoDaddy email
+        pass: process.env.SMPT_PASSWORD, // Your GoDaddy email password
       },
       tls: { rejectUnauthorized: false },
     });

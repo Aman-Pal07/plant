@@ -84,7 +84,9 @@ const Register = () => {
         setSuccess(data.message);
         setShowAnimation(true);
         setFormData({ name: "", email: "", phone: "" });
-        setPopupMessage("Registration Successful!");
+        setPopupMessage(
+          "Thanks for Registration. The Certification has been mailed to your Account"
+        );
         setPopupType("success");
 
         setTimeout(() => {
