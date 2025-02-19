@@ -186,7 +186,7 @@ const Register = () => {
       <div className="relative aspect-square w-[280px] sm:w-[320px] md:w-[400px] lg:w-[500px]">
         <video
           ref={videoRef}
-          src="../../public/plant_gif.mp4"
+          src="/plant_gif.mp4"
           autoPlay
           muted
           className="w-full h-full object-cover"
