@@ -193,20 +193,21 @@ const sendEmail = async (to, subject, certificateData) => {
     await generatePDF(html, pdfPath);
 
     const transporter = nodemailer.createTransport({
-      service: "gmail",
+      host: "smtpout.secureserver.net",
+      port: 465, // Use 587 if 465 doesn't work
+      secure: true, // Set to false if using port 587
       auth: {
-        user: process.env.SMPT_MAIL,
-        pass: process.env.SMPT_PASSWORD,
+        user: "info@plantatree.org.in", // Your GoDaddy email
+        pass: "hosting@123#", // Your GoDaddy email password
       },
       tls: { rejectUnauthorized: false },
-      connectionTimeout: 30000,
-      socketTimeout: 30000,
     });
 
     await transporter.verify();
 
     const mailOptions = {
-      from: process.env.SMPT_MAIL,
+      from: `@plantatree.org.in <info@plantatree.org.in>`, // Add a display name
+      replyTo: "info@plantatree.org.in",
       to,
       subject,
       text: `Dear ${certificateData.name},\n\nThank you for your valuable participation in the Townhall Meeting on OIL’s Environmental Strategy held on 19th February 2025 at Duliajan Club, Assam. Your involvement in this vital discussion plays an essential role in our collective journey toward building a sustainable future.\n\nAs a token of our gratitude for your commitment to environmental stewardship and the fight against climate change, we are pleased to present you with an e-plant gift. This gift symbolizes our shared dedication to creating a greener, more sustainable world.\n\nPlease find attached your Token of Gratitude, recognizing your contribution to the Townhall meeting and the future of OIL’s Environmental Strategy.\n\nBest regards,\nTeam HSE & ESG`,
