@@ -13,7 +13,8 @@ app.use(
     credentials: true,
   })
 );
-app.use(express.json());
+app.use(express.json({ limit: "50mb", timeout: 60000 })); // Increase request timeout to 60 sec
+
 app.use(express.urlencoded({ extended: true }));
 
 // Database connection with error handling
