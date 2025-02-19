@@ -151,6 +151,28 @@ const generateCertificateHTML = ({
   `;
 };
 
+const generatePDF = async (html, outputPath) => {
+  return new Promise((resolve, reject) => {
+    const options = {
+      format: "A4",
+      orientation: "landscape",
+      border: "0",
+      width: "350mm",
+      height: "230mm",
+      type: "pdf",
+      renderDelay: 2000, // Reduced delay for faster generation
+      timeout: 30000, // Reduced timeout for optimization
+      printBackground: true,
+      preferCSSPageSize: true,
+    };
+
+    htmlPdf.create(html, options).toFile(outputPath, (err, res) => {
+      if (err) reject(err);
+      else resolve(res);
+    });
+  });
+};
+
 const sendEmail = async (to, subject, certificateData) => {
   try {
     const tempDir = path.join(__dirname, "../temp");
