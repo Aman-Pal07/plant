@@ -167,7 +167,7 @@ const Register = () => {
       <button
         type="submit"
         disabled={loading}
-        className="bg-gradient-to-r from-green-800 to-green-400 text-white rounded-lg py-2 sm:py-3 px-4 sm:px-6 mt-2 sm:mt-4 flex justify-center items-center gap-2 hover:from-green-900 hover:to-green-500 transition-all transform hover:-translate-y-1 shadow-lg disabled:opacity-50 text-xs sm:text-sm md:text-base font-medium"
+        className="bg-gradient-to-r from-green-800 to-green-400 text-white rounded-lg py-2 sm:py-3 px-4 sm:px-6 mt-2 sm:mt-4 flex justify-center items-center gap-2 hover:from-green-900 hover:to-green-500 transition-all transform hover:-translate-y-1 shadow-lg disabled:opacity-50 text-xs sm:text-sm md:text-base font-medium "
       >
         {loading ? (
           "Registering..."
@@ -202,30 +202,26 @@ const Register = () => {
 
   return (
     <div className="min-h-screen w-full bg-cover bg-center overflow-x-hidden flex items-center justify-center">
-      <div className="relative w-full min-h-screen flex flex-col items-center justify-start py-8 px-4">
+      <div className="relative w-full min-h-screen flex flex-col items-center justify-start py-8 px-4 sm:px-6 md:px-8">
         {popupMessage && renderPopup()}
-
         {showAnimation && !videoEnded ? (
           renderAnimation()
         ) : (
-          <div className="w-full h-full flex flex-col lg:flex-row items-center justify-center gap-8">
+          <div className="w-full h-full flex flex-col lg:flex-row items-center justify-center gap-y-8 sm:gap-x-4 px-4 sm:px-6 md:px-8">
             {/* Left Side */}
-            <div className="w-full lg:w-1/2 h-full flex-1 flex flex-col items-center justify-center p-4 sm:p-6 md:p-8 bg-white/50 backdrop-blur-xl rounded-xl sm:rounded-2xl shadow-2xl">
+            <div className="w-full lg:w-1/2 h-full flex-1 flex flex-col items-center justify-center p-4 sm:p-6 md:p-8 bg-white/50 backdrop-blur-xl rounded-xl sm:rounded-2xl shadow-2xl  ">
               <h2 className="text-xl bg-clip-text text-transparent bg-gradient-to-l from-green-700 via-green-900 to-green-700 text-center pb-9 font-bold">
                 Plant a tree and make ESG Townhall Meeting on OIL'Environment
                 Strategy carbon neutral
               </h2>
-
               <p className="text-center text-gray-700 mb-4 sm:mb-6 text-xs sm:text-sm md:text-base px-2">
                 Join our growing community on 19 Feb, 2025 and make a positive
                 impact on the environment. Register now!
               </p>
-
               {renderForm()}
             </div>
-
             {/* Right Side */}
-            <div className="w-full lg:w-1/2 h-full flex-1 flex items-center lg:mt-16 justify-center">
+            <div className="w-full lg:w-1/2 h-full flex-1 flex items-center mt-[4.7rem] justify-center">
               {!showAnimation && <CarbonEmissionChart />}
             </div>
           </div>
