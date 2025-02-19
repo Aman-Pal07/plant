@@ -189,7 +189,7 @@ const generatePDF = async (html, outputPath) => {
       width: "350mm",
       height: "230mm",
       type: "pdf",
-      renderDelay: 2000, // Increased delay
+      renderDelay: 5000, // Increased delay
       timeout: 60000, // Added timeout
       zoomFactor: 1,
       printBackground: true,
