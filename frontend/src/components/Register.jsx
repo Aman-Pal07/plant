@@ -194,7 +194,7 @@ const Register = () => {
       <div className="relative aspect-square w-[280px] sm:w-[320px] md:w-[400px] lg:w-[400px]">
         <video
           ref={videoRef}
-          src="/plant_gif.mp4"
+          src="https://res.cloudinary.com/do4acizfd/video/upload/v1740031126/plant_gif_ptdxqw.mp4"
           autoPlay
           muted
           className="w-full h-full object-cover"
